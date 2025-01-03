@@ -26,7 +26,9 @@ module.exports = upload => {
             res.json(ret);  
         } catch (err) {
             console.log("myInquiry sql 실패 : ", err.message);
-            res.status(500).send('내 문의 내역 DB 오류');
+            if (!res.headersSent) { // 응답 중복 방지
+                res.status(500).send('내 문의 내역 DB 오류');
+            }
         }
     });
 
@@ -50,7 +52,9 @@ module.exports = upload => {
             }
         } catch (err) {
             console.log("회원정보수정 pw 확인 서버 오류:", err.message);
-            res.status(500).send('회원정보수정 pw 확인 서버 오류');
+            if (!res.headersSent) { // 응답 중복 방지
+                res.status(500).send('회원정보수정 pw 확인 서버 오류');
+            }
         }
     });
 
