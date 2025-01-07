@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const axios = require('axios');
 
 // 예약 가능한 객실 및 패키지 조회
 router.post('/', async (req, res) => {
@@ -66,11 +67,11 @@ router.post("/save", async (req, res) => {
 
 // 결제 저장 API
 router.post('/savepayment', async (req, res) => {
-  const { reservationId, paymentAmount } = req.body;
+  const { reservationId, paymentAmount, paymentId } = req.body;
 
   try {
     // 8자리 랜덤 결제 ID 생성
-    const paymentId = Math.floor(Math.random() * 90000000) + 10000000; // 8자리 랜덤 결제 ID 생성
+    // const paymentId = Math.floor(Math.random() * 90000000) + 10000000;
     const now = new Date();
     const koreanTime = new Date(now.getTime() + 9 * 60 * 60 * 1000); // UTC + 9시간
     const paymentDate = koreanTime.toISOString().slice(0, 19).replace('T', ' '); // KST 시간으로 포맷
@@ -115,4 +116,30 @@ router.post('/detail', async (req, res) => {
   }
 });
 
+const SECRET_KEY = 'test_sk_AQ92ymxN34PeKWvLOJKy3ajRKXvd'; // 토스페이먼츠 시크릿 키
+
+router.post('/confirm', async (req, res) => {
+  const { paymentKey, orderId, amount, orderName, customerName } = req.body;
+  console.log('요청 데이터:', req.body);
+
+  try {
+    const authHeader = `Basic ${Buffer.from(`${SECRET_KEY}:`).toString('base64')}`;
+    const response = await axios.post(
+      'https://api.tosspayments.com/v1/payments/confirm',
+      { paymentKey, orderId, amount, orderName, customerName },
+      { headers: { Authorization: authHeader, 'Content-Type': 'application/json' } }
+    );
+
+    res.json({ message: '결제 승인 완료', data: response.data });
+    console.log('토스페이먼츠 응답:', response.data);
+  } catch (error) {
+    if (error.response) {
+      console.error('결제 승인 오류 (응답 있음):', error.response.data);
+      res.status(500).json({ message: '결제 승인 실패', error: error.response.data });
+    } else {
+      console.error('결제 승인 오류 (응답 없음):', error.message || error);
+      res.status(500).json({ message: '결제 승인 실패', error: error.message || error });
+    }
+  }
+});
 module.exports = router;

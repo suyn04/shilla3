@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "../../scss/paymentPage.module.scss";
+import { loadTossPayments } from "@tosspayments/payment-sdk";
 
 function AllRoomPaymentPage() {
   const location = useLocation();
@@ -14,129 +15,123 @@ function AllRoomPaymentPage() {
   const {
     reservationDate,
     roomType,
-    // adultBf,
-    // childBf,
-    // extraBed,
     roomId,
     productId,
     paySum,
     adultCount,
     childrenCount,
-  } = location.state || {};
+  } = location.state || {};  
 
   console.log("체크인, 체크아웃 날짜 : ", reservationDate);
   console.log("객실 : ", roomType);
   console.log("paySum : ", paySum);
   console.log("product_id : ", productId);
 
-  // 상태
-  // const [reservationDate, setReservationDate] = useState("");
-  // const [roomName, setRoomName] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
-  const [name, setName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const clientKey = "test_ck_EP59LybZ8BwNvPWGkOGY36GYo7pR"; // 클라이언트 키
 
-  const handleBoth = async () => {
-    const reservationId = await handleReservation(); // 예약 처리 후 예약 ID 반환
-    if (reservationId) {
-      await handlePayment(reservationId); // 예약이 완료되면 결제 처리
-    }
-  };
+  let lastOrderDate = "";
+  let usedOrderNumbers = new Set(); // 사용된 주문 번호를 저장
 
-  const handleReservation = async () => {
-    if (!accountNumber || !name || !phoneNumber) {
-      alert("모든 내용을 작성해주세요.");
-      return;
+  function generateOrderNum() {
+    const today = new Date();
+    const formattedDate = `${today.getFullYear()}${String(
+      today.getMonth() + 1
+    ).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
+
+    // 날짜가 바뀌면 초기화
+    if (formattedDate !== lastOrderDate) {
+      lastOrderDate = formattedDate;
+      usedOrderNumbers.clear(); // 중복 방지를 위한 기록 초기화
     }
 
+    let randomNumberSuffix;
+    do {
+      // 8자리 랜덤 숫자 생성
+      randomNumberSuffix = String(
+        Math.floor(Math.random() * 1_0000_0000)
+      ).padStart(8, "0");
+    } while (usedOrderNumbers.has(randomNumberSuffix)); // 중복이면 다시 생성
+
+    usedOrderNumbers.add(randomNumberSuffix); // 생성된 번호 저장
+
+    return `${formattedDate}-${randomNumberSuffix}`;
+  }
+
+  const handleTossPayment = async () => {
     if (!memberId) {
-      alert("로그인이 필요합니다.");
-      navigate("/login");
+      alert("모든 내용을 작성해주세요");
       return;
     }
 
-    // 예약 데이터를 준비합니다.
-    const reservationData = {
-      memberId: memberId,
+    try {
+      // 주문 번호와 결제 금액 설정
+      const orderNum = generateOrderNum();
+      console.log(orderNum);
+
+      // 토스페이먼츠 결제창 로드
+      const tossPayments = await loadTossPayments(clientKey);
+      if (!tossPayments || typeof tossPayments.requestPayment !== "function") {
+        throw new Error(
+          "tossPayments 객체가 초기화되지 않았거나 requestPayment 메서드가 없습니다"
+        );
+      }
+      tossPayments
+        .requestPayment("카드", {
+          amount: paySum, // 결제 금액
+          orderId: orderNum, // 고유 주문 ID
+          orderName: roomType, // 상품명
+          customerName: "홍길동", // 구매자 이름
+          successUrl: `http://localhost:3000/reserve/detail/payment/paymentallroom/payment-success?orderName=${encodeURIComponent(
+            roomType
+          )}&orderId=${encodeURIComponent(
+            orderNum
+          )}&customerName=${encodeURIComponent(
+            "홍길동"
+          )}&reservationDate=${encodeURIComponent(
+            reservationDate
+          )}&roomType=${encodeURIComponent(
+            roomType
+          )}&roomId=${encodeURIComponent(
+            roomId
+          )}&productId=${encodeURIComponent(
+            productId
+          )}&paySum=${encodeURIComponent(
+            paySum
+          )}&adultCount=${encodeURIComponent(
+            adultCount
+          )}&childrenCount=${encodeURIComponent(childrenCount)}`,
+          failUrl:
+            "http://localhost:3000/reserve/detail/payment/paymentallroom/payment-fail",
+        })
+        .then(async () => {
+          // 함수가 실행되면 Toss api
+        })
+        .catch((error) => {
+          console.error("결제창 오류:", error);
+          if (error.code === "USER_CANCEL") {
+            alert("결제가 취소되었습니다.");
+          } else {
+            alert("결제창을 열 수 없습니다. 다시 시도해주세요");
+          }
+        });
+    } catch (error) {
+      console.error("결제 요청 오류:", error);
+      throw error;
+    }
+  };
+
+  // PaymentPage로 이동
+  navigate("/reserve/detail/payment/paymentallroom/payment-success", {
+    state: {
+      reservationDate: reservationDate,
+      roomType: roomType,
+      roomId: roomId,
       productId: productId,
-      startDate: reservationDate.split(" ~ ")[0],
-      endDate: reservationDate.split(" ~ ")[1],
-      totPrice: paySum,
-      adultCnt: adultCount,
-      childCnt: childrenCount,
-      cancel: 0, // 기본 취소 여부
-    };
-
-    try {
-      // axios를 사용하여 서버로 예약 데이터를 전송합니다.
-      const response = await axios.post(
-        "http://localhost:5002/bk/reserve/save",
-        reservationData
-      );
-
-      if (response.status === 201) {
-        alert("예약이 완료되었습니다!");
-        const reservationId = response.data.reservationId;
-        return reservationId; // 예약 ID를 반환하여 결제 함수로 전달
-      } else {
-        alert("예약 저장에 실패했습니다.");
-        return null;
-      }
-    } catch (error) {
-      console.error("예약 저장 오류:", error);
-      alert("서버에 연결할 수 없습니다. 다시 시도해주세요.");
-      return null;
-    }
-  };
-
-  // 날짜에 하루를 더하는 함수
-  const addOneDay = (date) => {
-    const newDate = new Date(date);
-    newDate.setDate(newDate.getDate() + 1); // 하루를 더함
-    return newDate; // 날짜 객체를 반환
-  };
-
-  const handlePayment = async (reservationId) => {
-    // 결제 ID (8자리 랜덤 숫자)
-    const paymentId = Math.floor(Math.random() * 90000000) + 10000000; // 8자리 랜덤 결제 ID 생성
-    const paymentDate = addOneDay(new Date())
-      .toISOString()
-      .slice(0, 19)
-      .replace("T", " "); // 하루를 더한 결제 시각
-
-    // 결제 데이터를 준비합니다.
-    const paymentData = {
-      paymentId: paymentId,
-      reservationId: reservationId,
-      paymentDate: paymentDate,
-      paymentAmount: paySum,
-      refund: "0",
-      refundDate: null,
-      refundAmount: null,
-    };
-
-    try {
-      const paymentResponse = await axios.post(
-        "http://localhost:5002/bk/reserve/savepayment", // 결제 저장 API
-        paymentData
-      );
-
-      if (paymentResponse.status === 201) {
-        // alert("결제가 완료되었습니다!");
-        const userConfirmed = window.confirm("예약 내역을 확인하시겠습니까?");
-        if (userConfirmed) {
-          navigate("/myPage/myReservation"); // 사용자가 확인을 누른 경우 예약 페이지로 이동
-        } else {
-          navigate("/");
-        }
-      } else {
-        alert("결제 저장에 실패");
-      }
-    } catch (error) {
-      console.error("결제 저장 오류:", error);
-      alert("서버에 연결할 수 없습니다.");
-    }
-  };
+      paySum: paySum,
+      adultCount: adultCount,
+      childrenCount: childrenCount,
+    },
+  });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -144,7 +139,7 @@ function AllRoomPaymentPage() {
 
   return (
     <div className={styles.paymentContainer}>
-      <h2>결제 페이지</h2>
+      <h2>결제정보</h2>
       <form className={styles.paymentForm}>
         <div className={styles.reserveDate}> 예약날짜 : {reservationDate}</div>
         <div className={styles.roomType}>
@@ -155,45 +150,12 @@ function AllRoomPaymentPage() {
           {" "}
           이용인원 : 성인: {adultCount} 어린이: {childrenCount}
         </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="accountNumber">카드번호:</label>
-          <input
-            type="text"
-            id="accountNumber"
-            value={accountNumber}
-            onChange={(e) => setAccountNumber(e.target.value)}
-            placeholder="카드번호 입력"
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="name">이름:</label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="이름 입력"
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="phoneNumber">전화번호:</label>
-          <input
-            type="text"
-            id="phoneNumber"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            placeholder="전화번호 입력"
-          />
-        </div>
-        {/* <ul>
-          <li>성인 조식: {adultBf}</li>
-          <li>어린이 조식: {childBf}</li>
-          <li>엑스트라 베드: {extraBed}</li>
-        </ul> */}
-        <p className={styles.totPrice}>총 결제 금액: {paySum.toLocaleString()}원</p>
+        <p className={styles.totPrice}>
+          총 결제 금액: {paySum.toLocaleString()}원
+        </p>
       </form>
       <div className={styles.buttonContainer}>
-        <button onClick={handleBoth}>결제 완료</button>
+        <button onClick={handleTossPayment}>결제하기</button>
         <button className={styles.cancelBtn} onClick={() => navigate(-1)}>
           취소
         </button>

@@ -86,6 +86,9 @@ const reservationRouter = require("./controller/reservations.js");
 app.use("/bk/reserve", reservationRouter);
 const offerReserveRouter = require("./controller/reserveOffer.js");
 app.use("/bk/reserve", offerReserveRouter);
+// 결제 api 라우터 추가
+const paymentApiRouter = require("./controller/reservations.js")
+app.use("/api/payment", paymentApiRouter)
 // myPage reserve 라우터 추가
 // const myPageReserveRouter = require("./controller/myPageReservation.js");
 // app.use("/bk/myPage/myReservation", myPageReserveRouter);
