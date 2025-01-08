@@ -1,5 +1,5 @@
 // setting
-import React from "react";
+import React from 'react';
 import { Route, Routes, useLocation } from "react-router-dom";
 
 // main
@@ -55,6 +55,7 @@ import Bakery from "./components/dining/Bakery";
 
 // login
 import Login from "./components/login/Login";
+import LoginCallback from "./components/login/LoginCallback";
 
 // join
 import JoinComp1 from "./components/join/JoinComp1";
@@ -117,8 +118,6 @@ import ResMainAllRoomPayment from "./components/reservation/ResMainAllRoomPaymen
 import Res_detail from "./components/reservation/Res_detail";
 import BoonModal from "./components/reservation/BoonModal";
 import RoomModal from "./components/reservation/RoomModal";
-import PaymentSuccess from './components/reservation/PaymentSuccess';
-import PaymentFail from './components/reservation/PaymentFail';
 
 // room
 import Room from "./components/room/Room";
@@ -154,193 +153,227 @@ import Findpw from "./components/find/Findpw";
 import EventTemp from "./components/specialoffer/EventTemp";
 
 function ScrollToTop() {
-  const location = useLocation();
+    const location = useLocation();
 
-  React.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
+    React.useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location.pathname]);
 
-  return null;
+    return null;
 }
 
 function App() {
-  return (
-    <>
-      <ScrollToTop />
-      {/* 스크롤 상단 이동 컴포넌트 */}
-      <Routes>
-        {/* 메인 */}
-        <Route index element={<Main></Main>}></Route>
-        {/* 관리자페이지 */}
-        {/* <Route path="/admin" element={<AdminTemp></AdminTemp>}></Route> */}
-        <Route path="admin/dashboard" element={<AdminDashboard />} />
-        <Route path="admin/room" element={<AdminRoom />} />
-        <Route path="admin/room/detail/:id" element={<AdminRoomDetail />} />
-        <Route path="admin/member" element={<AdminMember />} />
-        <Route path="admin/member/:id" element={<AdminCont3Detail />} />
-        <Route path="admin/reservation" element={<AdminReservation />} />
-        <Route path="admin/notice" element={<AdminNotice />}>
-          <Route path="" element={<AdminNoticeMain />} />
-          <Route path="register" element={<AdminRegister />} />
-          <Route path="modify/:id" element={<AdminModify />} />
-        </Route>
-        <Route path="/admin/cs" element={<AdminCsTemp />}>
-          <Route path="" element={<AdminCs />} />
-          <Route path="detail/:num" element={<AdminCsdetail />} />
-          {/* <Route path="modify/:board_id" element={<AdminCsModify />} /> */}
-        </Route>
-        <Route path="admin/sales" element={<AdminSales />} />
+    return (
+        <>
+            <ScrollToTop />{/* 스크롤 상단 이동 컴포넌트 */}
+            <Routes>
+                {/* 메인 */}
+                <Route index element={<Main></Main>}></Route>
+                {/* 관리자페이지 */}
+                {/* <Route path="/admin" element={<AdminTemp></AdminTemp>}></Route> */}
+                <Route path="admin/dashboard" element={<AdminDashboard />} />
+                <Route path="admin/room" element={<AdminRoom />} />
+                <Route
+                    path="admin/room/detail/:id"
+                    element={<AdminRoomDetail />}
+                />
+                <Route path="admin/member" element={<AdminMember />} />
+                <Route path="admin/member/:id" element={<AdminCont3Detail />} />
+                <Route
+                    path="admin/reservation"
+                    element={<AdminReservation />}
+                />
+                <Route path="admin/notice" element={<AdminNotice />}>
+                    <Route path="" element={<AdminNoticeMain />} />
+                    <Route path="register" element={<AdminRegister />} />
+                    <Route path="modify/:id" element={<AdminModify />} />
+                </Route>
+                <Route path="/admin/cs" element={<AdminCsTemp />}>
+                    <Route path="" element={<AdminCs />} />
+                    <Route path="detail/:num" element={<AdminCsdetail />} />
+                    {/* <Route path="modify/:board_id" element={<AdminCsModify />} /> */}
+                </Route>
+                <Route path="admin/sales" element={<AdminSales />} />
 
-        {/* 마이페이지 */}
-        <Route path="/myPage" element={<MyPageTemp></MyPageTemp>}>
-          <Route path="" element={<MyInfo />} />
-          <Route path="myInfoChg" element={<MyInfoChg />} />
-          <Route path="myReservation" element={<MyReservation />} />
-          <Route path="myInquiry" element={<MyInquiry />} />
-        </Route>
-        {/* 로그인 */}
-        <Route path="/login" element={<Login></Login>}></Route>
-        {/* 회원가입 */}
-        <Route path="/Join" element={<JoinComp1></JoinComp1>}></Route>
-        <Route path="/myinfo" element={<JoinComp2></JoinComp2>}></Route>
-        <Route path="/Welcome" element={<Welcome></Welcome>}></Route>
-        {/* 연락처 */}
-        <Route path="/info" element={<Info></Info>}></Route>
-        {/* 오시는길 */}
-        <Route path="/location" element={<Location></Location>}></Route>
-        {/* 문의하기 */}
-        <Route path="/board" element={<BoardTemp />}>
-          <Route path="" element={<BoardList />} />
-          <Route path="detail/:num" element={<BoardDetail />} />
-          <Route path="join" element={<BoardJoin />} />
-          <Route path="modify/:num" element={<BoardModify />} />
-        </Route>
+                {/* 마이페이지 */}
+                <Route path="/myPage" element={<MyPageTemp></MyPageTemp>}>
+                    <Route path="" element={<MyInfo />} />
+                    <Route path="myInfoChg" element={<MyInfoChg />} />
+                    <Route path="myReservation" element={<MyReservation />} />
+                    <Route path="myInquiry" element={<MyInquiry />} />
+                </Route>
+                {/* 로그인 */}
+                <Route path="/login" element={<Login></Login>}></Route>
+                <Route path="/callback" element={<LoginCallback/>}></Route>
+                {/* 회원가입 */}
+                <Route path="/Join" element={<JoinComp1></JoinComp1>}></Route>
+                <Route path="/myinfo" element={<JoinComp2></JoinComp2>}></Route>
+                <Route path="/Welcome" element={<Welcome></Welcome>}></Route>
+                {/* 연락처 */}
+                <Route path="/info" element={<Info></Info>}></Route>
+                {/* 오시는길 */}
+                <Route path="/location" element={<Location></Location>}></Route>
+                {/* 문의하기 */}
+                <Route path="/board" element={<BoardTemp />}>
+                    <Route path="" element={<BoardList />} />
+                    <Route path="detail/:num" element={<BoardDetail />} />
+                    <Route path="join" element={<BoardJoin />} />
+                    <Route path="modify/:num" element={<BoardModify />} />
+                </Route>
 
-        {/* 스페셜오퍼 */}
-        <Route path="/specialOffer" element={<SpecialOffer />}>
-          <Route path="" element={<OfferMain />} />
-          <Route path="detail/:id" element={<OfferDetail />} />
-        </Route>
-        <Route path="/event" element={<EventTemp />}>
-          <Route path="" element={<Event />} />
-          <Route path="detail/1" element={<EventDetail1 />} />
-          <Route path="detail/2" element={<EventDetail2 />} />
-          <Route path="detail/3" element={<EventDetail3 />} />
-          <Route path="detail/4" element={<EventDetail4 />} />
-          <Route path="detail/5" element={<EventDetail5 />} />
-          <Route path="detail/6" element={<EventDetail6 />} />
-          <Route path="detail/7" element={<EventDetail7 />} />
-          <Route path="detail/8" element={<EventDetail8 />} />
-          <Route path="detail/9" element={<EventDetail9 />} />
-          <Route path="detail/10" element={<EventDetail10 />} />
-          <Route path="detail/11" element={<EventDetail11 />} />
-          <Route path="detail/12" element={<EventDetail12 />} />
-          <Route path="detail/13" element={<EventDetail13 />} />
-          <Route path="detail/14" element={<EventDetail14 />} />
-          <Route path="detail/15" element={<EventDetail15 />} />
-          <Route path="detail/16" element={<EventDetail16 />} />
-        </Route>
+                {/* 스페셜오퍼 */}
+                <Route path="/specialOffer" element={<SpecialOffer />}>
+                    <Route path="" element={<OfferMain />} />
+                    <Route path="detail/:id" element={<OfferDetail />} />
+                </Route>
+                <Route path="/event" element={<EventTemp />}>
+                    <Route path="" element={<Event />} />
+                    <Route path="detail/1" element={<EventDetail1 />} />
+                    <Route path="detail/2" element={<EventDetail2 />} />
+                    <Route path="detail/3" element={<EventDetail3 />} />
+                    <Route path="detail/4" element={<EventDetail4 />} />
+                    <Route path="detail/5" element={<EventDetail5 />} />
+                    <Route path="detail/6" element={<EventDetail6 />} />
+                    <Route path="detail/7" element={<EventDetail7 />} />
+                    <Route path="detail/8" element={<EventDetail8 />} />
+                    <Route path="detail/9" element={<EventDetail9 />} />
+                    <Route path="detail/10" element={<EventDetail10 />} />
+                    <Route path="detail/11" element={<EventDetail11 />} />
+                    <Route path="detail/12" element={<EventDetail12 />} />
+                    <Route path="detail/13" element={<EventDetail13 />} />
+                    <Route path="detail/14" element={<EventDetail14 />} />
+                    <Route path="detail/15" element={<EventDetail15 />} />
+                    <Route path="detail/16" element={<EventDetail16 />} />
+                </Route>
 
-        {/* 아이디, 비밀번호 찾기 */}
-        <Route path="/findid" element={<Findid />} />
-        <Route path="/findpw" element={<Findpw />} />
+                {/* 아이디, 비밀번호 찾기 */}
+                <Route path="/findid" element={<Findid />} />
+                <Route path="/findpw" element={<Findpw />} />
 
-        {/* 공지사항 */}
+                {/* 공지사항 */}
 
-        <Route path="/notice" element={<NoticeTemp />}>
-          <Route path="" element={<Noticelist />} />
-          <Route path="detail/:id" element={<Noticedetail />} />
-        </Route>
+                <Route path="/notice" element={<NoticeTemp />}>
+                    <Route path="" element={<Noticelist />} />
+                    <Route path="detail/:id" element={<Noticedetail />} />
+                </Route>
 
-        {/* 예약페이지 */}
-        <Route path="/reserve" element={<Res_temp />}>
-          <Route path="" element={<Res_search />} />
-          <Route path="detail" element={<Res_detail />} />
-          {/* <Route path=":id" element={<ResOfferRoomId />} /> */}
-          <Route path="detailallroom" element={<ResMainAllRoomDetail />} />
-          <Route path="detail/paymentallroom" element={<ResMainAllRoomPayment />}/>
-          <Route path="detail/payment" element={<PaymentPage />} />
-        </Route>
-        <Route path="/reserve/detail/payment/paymentallroom/payment-success" element={<PaymentSuccess />} />
-        <Route path="/reserve/detail/payment/paymentallroom/payment-fail" element={<PaymentFail />} />
-        <Route path="/reserve/:product_id" element={<ResOffer />} />
-        <Route path="/reserve/pop" element={<BoonModal />} />
-        <Route path="/reserve/pop2" element={<RoomModal />} />
+                {/* 예약페이지 */}
+                <Route path="/reserve" element={<Res_temp />}>
+                    <Route path="" element={<Res_search />} />
+                    <Route path="detail" element={<Res_detail />} />
+                    {/* <Route path=":id" element={<ResOfferRoomId />} /> */}
+                    <Route
+                        path="detailallroom"
+                        element={<ResMainAllRoomDetail />}
+                    />
+                    <Route
+                        path="detail/paymentallroom"
+                        element={<ResMainAllRoomPayment />}
+                    />
+                    <Route path="detail/payment" element={<PaymentPage />} />
+                </Route>
+                <Route path="/reserve/:product_id" element={<ResOffer />} />
+                <Route path="/reserve/pop" element={<BoonModal />} />
+                <Route path="/reserve/pop2" element={<RoomModal />} />
 
-        {/* 객실 */}
-        <Route path="/room" element={<Room />} />
+                {/* 객실 */}
+                <Route path="/room" element={<Room />} />
 
-        {/* 스탠다드 */}
-        <Route path="/standard" element={<StandardTemp />}>
-          <Route path="" element={<Standard />} />
-          <Route path="businessDeluxe" element={<Stand_BusinessDeluxe />} />
-          <Route
-            path="barrierFreeDeluxe"
-            element={<Stand_BarrierFreeDeluxe />}
-          />
-          <Route
-            path="grandCornerDeluxe"
-            element={<Stand_GrandCornerDeluxe />}
-          />
-        </Route>
+                {/* 스탠다드 */}
+                <Route path="/standard" element={<StandardTemp />}>
+                    <Route path="" element={<Standard />} />
+                    <Route
+                        path="businessDeluxe"
+                        element={<Stand_BusinessDeluxe />}
+                    />
+                    <Route
+                        path="barrierFreeDeluxe"
+                        element={<Stand_BarrierFreeDeluxe />}
+                    />
+                    <Route
+                        path="grandCornerDeluxe"
+                        element={<Stand_GrandCornerDeluxe />}
+                    />
+                </Route>
 
-        {/* 이그제큐티브 */}
-        <Route path="/executive" element={<ExecutiveTemp />}>
-          <Route path="" element={<Executive />} />
-          <Route path="execGrandDeluxe" element={<Exec_GrandDeluxe />} />
-        </Route>
+                {/* 이그제큐티브 */}
+                <Route path="/executive" element={<ExecutiveTemp />}>
+                    <Route path="" element={<Executive />} />
+                    <Route
+                        path="execGrandDeluxe"
+                        element={<Exec_GrandDeluxe />}
+                    />
+                </Route>
 
-        {/* 스위트 */}
-        <Route path="/suite" element={<SuiteTemp />}>
-          <Route path="" element={<Suite />} />
-          <Route path="korean" element={<Suite_Korean />} />
-          <Route path="corner" element={<Suite_Corner />} />
-          <Route path="premier" element={<Suite_Premier />} />
-          <Route path="royal" element={<Suite_Royal />} />
-          <Route path="shilla" element={<Suite_Shilla />} />
-          <Route path="presidential" element={<Suite_Presidential />} />
-        </Route>
+                {/* 스위트 */}
+                <Route path="/suite" element={<SuiteTemp />}>
+                    <Route path="" element={<Suite />} />
+                    <Route path="korean" element={<Suite_Korean />} />
+                    <Route path="corner" element={<Suite_Corner />} />
+                    <Route path="premier" element={<Suite_Premier />} />
+                    <Route path="royal" element={<Suite_Royal />} />
+                    <Route path="shilla" element={<Suite_Shilla />} />
+                    <Route
+                        path="presidential"
+                        element={<Suite_Presidential />}
+                    />
+                </Route>
 
-        {/* 이그제큐티브 라운지 */}
-        <Route path="/executiveLounge" element={<Lounge_ExecutiveLounge />} />
+                {/* 이그제큐티브 라운지 */}
+                <Route
+                    path="/executiveLounge"
+                    element={<Lounge_ExecutiveLounge />}
+                />
 
-        {/* 라이프스타일 */}
-        <Route path="/lifeStyle" element={<LifeStyle />}></Route>
-        <Route path="/outdoorPool" element={<OutdoorPool />}></Route>
-        <Route path="/outdoorPool2" element={<OutdoorPool2 />}></Route>
-        <Route path="/fitness" element={<Fitness />}></Route>
-        <Route path="/fitness2" element={<Fitness2 />}></Route>
-        <Route path="/fitness3" element={<Fitness3 />}></Route>
-        <Route path="/fitness4" element={<Fitness4 />}></Route>
-        <Route path="/walkingTrails" element={<WalkingTrails />}></Route>
-        <Route path="/jogging" element={<Jogging />}></Route>
-        <Route path="/shopping" element={<Shopping />}></Route>
-        <Route path="/shopping2" element={<Shopping2 />}></Route>
+                {/* 라이프스타일 */}
+                <Route path="/lifeStyle" element={<LifeStyle />}></Route>
+                <Route path="/outdoorPool" element={<OutdoorPool />}></Route>
+                <Route path="/outdoorPool2" element={<OutdoorPool2 />}></Route>
+                <Route path="/fitness" element={<Fitness />}></Route>
+                <Route path="/fitness2" element={<Fitness2 />}></Route>
+                <Route path="/fitness3" element={<Fitness3 />}></Route>
+                <Route path="/fitness4" element={<Fitness4 />}></Route>
+                <Route
+                    path="/walkingTrails"
+                    element={<WalkingTrails />}
+                ></Route>
+                <Route path="/jogging" element={<Jogging />}></Route>
+                <Route path="/shopping" element={<Shopping />}></Route>
+                <Route path="/shopping2" element={<Shopping2 />}></Route>
 
-        {/* 웨딩&연회 */}
-        <Route path="/party" element={<Party />}></Route>
-        <Route path="/wedding" element={<Wedding />}></Route>
-        <Route path="/wedding2" element={<Wedding2 />}></Route>
-        <Route path="/wedding3" element={<Wedding3 />}></Route>
-        <Route path="/corporateParty" element={<CorporateParty />}></Route>
-        <Route path="/corporateParty2" element={<CorporateParty2 />}></Route>
-        <Route path="/corporateParty3" element={<CorporateParty3 />}></Route>
-        <Route path="/familyParty" element={<FamilyParty />}></Route>
-        <Route path="/familyParty2" element={<FamilyParty2 />}></Route>
+                {/* 웨딩&연회 */}
+                <Route path="/party" element={<Party />}></Route>
+                <Route path="/wedding" element={<Wedding />}></Route>
+                <Route path="/wedding2" element={<Wedding2 />}></Route>
+                <Route path="/wedding3" element={<Wedding3 />}></Route>
+                <Route
+                    path="/corporateParty"
+                    element={<CorporateParty />}
+                ></Route>
+                <Route
+                    path="/corporateParty2"
+                    element={<CorporateParty2 />}
+                ></Route>
+                <Route
+                    path="/corporateParty3"
+                    element={<CorporateParty3 />}
+                ></Route>
+                <Route path="/familyParty" element={<FamilyParty />}></Route>
+                <Route path="/familyParty2" element={<FamilyParty2 />}></Route>
 
-        {/* 다이닝 */}
-        <Route path="/dining" element={<Dining />}></Route>
-        <Route path="/restaurant" element={<Restaurant />}></Route>
-        <Route path="/restaurant2" element={<Restaurant2 />}></Route>
-        <Route path="/restaurant3" element={<Restaurant3 />}></Route>
-        <Route path="/restaurant4" element={<Restaurant4 />}></Route>
-        <Route path="/restaurant5" element={<Restaurant5 />}></Route>
-        <Route path="/Lounge" element={<Lounge />}></Route>
-        <Route path="/Lounge2" element={<Lounge2 />}></Route>
-        <Route path="/Bakery" element={<Bakery />}></Route>
-      </Routes>
-    </>
-  );
+                {/* 다이닝 */}
+                <Route path="/dining" element={<Dining />}></Route>
+                <Route path="/restaurant" element={<Restaurant />}></Route>
+                <Route path="/restaurant2" element={<Restaurant2 />}></Route>
+                <Route path="/restaurant3" element={<Restaurant3 />}></Route>
+                <Route path="/restaurant4" element={<Restaurant4 />}></Route>
+                <Route path="/restaurant5" element={<Restaurant5 />}></Route>
+                <Route path="/Lounge" element={<Lounge />}></Route>
+                <Route path="/Lounge2" element={<Lounge2 />}></Route>
+                <Route path="/Bakery" element={<Bakery />}></Route>
+            </Routes>
+        </>
+    );
 }
 
 export default App;

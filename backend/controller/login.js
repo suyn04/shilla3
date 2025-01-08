@@ -25,20 +25,6 @@ module.exports = () => {
         
     });
 
-
-    router.get("/", async (req, res) => {
-        console.log("login 목록 접근", req.session);
-
-        if(req.session.user){ // user라는 세션이 있으면 loginComplete.html 페이지가 뜨고 user 이름도 넣어준다.
-            
-            res.json(req.session.user);
-        }
-        else{ //user라는 세션이 없다면 로그인 페이지가 뜬다.
-            res.send(`로그인 정보 없음`);
-        }
-        
-    });
-
     return router;
 };
 
