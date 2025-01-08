@@ -62,6 +62,11 @@ const LoginComp = () => {
         loginGo();
         }
     }
+    // 네이버 로그인파트
+    const [user, setUser] = useState(null);//사용자 정보 가져오기
+    function naverLoginBtn(){
+        window.location.href = `${bkURL}/naverLogin`;//메인으로 이동 
+    }
 
     // const { naver } = window;
     // const [user, setUser] = useState(null);//사용자 정보 가져오기
@@ -101,10 +106,6 @@ const LoginComp = () => {
     // };
     // console.log(naverLogin)
 
-    const naverIdLogin = () =>{
-        window.location.href = `${bkURL}/naverLogin`
-    }
-
 
     return (
         <>
@@ -136,7 +137,7 @@ const LoginComp = () => {
                             </div>
 
                             {/* <p id="naverIdLogin">네이버로그인</p> */}
-                            <p onClick={naverIdLogin}>네이버로그인</p>
+                            <p onClick={naverLoginBtn}>네이버로그인</p>
                             <p>구글로그인</p>
                             <p>페이스북로그인</p>
                         </div>
