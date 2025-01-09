@@ -118,6 +118,8 @@ import ResMainAllRoomPayment from "./components/reservation/ResMainAllRoomPaymen
 import Res_detail from "./components/reservation/Res_detail";
 import BoonModal from "./components/reservation/BoonModal";
 import RoomModal from "./components/reservation/RoomModal";
+import PaymentSuccess from "./components/reservation/PaymentSuccess";
+import PaymentFail from "./components/reservation/PaymentFail"
 
 // room
 import Room from "./components/room/Room";
