@@ -257,24 +257,22 @@ function App() {
                     <Route path="detail/:id" element={<Noticedetail />} />
                 </Route>
 
-                {/* 예약페이지 */}
-                <Route path="/reserve" element={<Res_temp />}>
-                    <Route path="" element={<Res_search />} />
-                    <Route path="detail" element={<Res_detail />} />
-                    {/* <Route path=":id" element={<ResOfferRoomId />} /> */}
-                    <Route
-                        path="detailallroom"
-                        element={<ResMainAllRoomDetail />}
-                    />
-                    <Route
-                        path="detail/paymentallroom"
-                        element={<ResMainAllRoomPayment />}
-                    />
-                    <Route path="detail/payment" element={<PaymentPage />} />
-                </Route>
-                <Route path="/reserve/:product_id" element={<ResOffer />} />
-                <Route path="/reserve/pop" element={<BoonModal />} />
-                <Route path="/reserve/pop2" element={<RoomModal />} />
+        {/* 예약페이지 */}
+        <Route path="/reserve" element={<Res_temp />}>
+          <Route path="" element={<Res_search />} />
+          <Route path="detail" element={<Res_detail />} />
+          {/* <Route path=":id" element={<ResOfferRoomId />} /> */}
+          <Route path="detailallroom" element={<ResMainAllRoomDetail />} />
+          <Route path="detail/paymentallroom" element={<ResMainAllRoomPayment />}/>
+          <Route path="detail/payment" element={<PaymentPage />} />
+        </Route>
+        {/* <Route path="/reserve/detail/payment/paymentallroom/payment-success" element={<PaymentSuccess />} /> */}
+        <Route path="/success" element={<PaymentSuccess />} />
+        {/* <Route path="/reserve/detail/payment/paymentallroom/payment-fail" element={<PaymentFail />} /> */}
+        <Route path="/fail" element={<PaymentFail />} />
+        <Route path="/reserve/:product_id" element={<ResOffer />} />
+        <Route path="/reserve/pop" element={<BoonModal />} />
+        <Route path="/reserve/pop2" element={<RoomModal />} />
 
                 {/* 객실 */}
                 <Route path="/room" element={<Room />} />

@@ -137,7 +137,9 @@ function ResMainAllRoomDetail(props) {
   // PaymentPage로 이동
   navigate("/reserve/detail/paymentallroom", {
     state: {
-      reservationDate: `${formattedCheckInDate} ~ ${formattedCheckOutDate}`, // 예약 날짜
+      checkInDate : formattedCheckInDate,
+      checkOutDate : formattedCheckOutDate,
+      // reservationDate: `${formattedCheckInDate} ~ ${formattedCheckOutDate}`, // 예약 날짜
       roomType: roomType,  // offerName 객실
       // adultBf: options.adultBf,
       // childBf: options.childBf,
