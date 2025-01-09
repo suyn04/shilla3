@@ -1,4 +1,4 @@
-import React  from "react";
+import React, {useState, useEffect}  from "react";
 import {Link,useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import '../../scss/common.scss'
@@ -62,6 +62,50 @@ const LoginComp = () => {
         loginGo();
         }
     }
+    // 네이버 로그인파트
+    const [user, setUser] = useState(null);//사용자 정보 가져오기
+    function naverLoginBtn(){
+        window.location.href = `${bkURL}/naverLogin`;//메인으로 이동 
+    }
+
+    // const { naver } = window;
+    // const [user, setUser] = useState(null);//사용자 정보 가져오기
+    // const [showExternalLogin, setShowExternalLogin] = useState(true)
+
+    // // 예시: React 컴포넌트에서 환경 변수 사용
+    // let clientId = process.env.REACT_APP_CLIENT_ID;
+    // let clientSecret = process.env.REACT_APP_CLIENT_SECRET;
+    // let redirectURI = process.env.REACT_APP_REDIRECT_URI;
+
+    // const naverLogin = new naver.LoginWithNaverId({
+    //     clientId: process.env.REACT_APP_CLIENT_ID,
+    //     clientSecret : process.env.REACT_APP_CLIENT_SECRET,
+    //     callbackUrl: process.env.REACT_APP_REDIRECT_URI,
+    //     isPopup: true,
+    //     loginButton: {
+    //       color: "green",
+    //       type: 3,// 타입종류 :1,2,3
+    //       height: 50,
+    //     },
+    //   });
+    // useEffect(() => {
+    //     naverLogin.init();//최초 1번 초기화시킴킴
+    //     // console.log("네이버 초기화");
+    //     getUser();//사용자 정보 가져옴 
+    // }, []);
+
+    // const getUser = async () => {
+    //     await naverLogin.getLoginStatus((status) => {
+    //         console.log(`로그인?: ${status}`);
+    //         if (status) {
+    //             setUser({ ...naverLogin.user });//로그인 정보 가져오기
+    //             window.opener.location.href="http://localhost:3000/callback";//메인으로 이동 
+    //             window.close();//팝업은 닫기 
+    //         }
+    //     });
+    // };
+    // console.log(naverLogin)
+
 
     return (
         <>
@@ -91,6 +135,11 @@ const LoginComp = () => {
                                 <Link to="/join">회원가입</Link>
                                 <Link to="/findid">ID/PW찾기</Link>
                             </div>
+
+                            {/* <p id="naverIdLogin">네이버로그인</p> */}
+                            <p onClick={naverLoginBtn}>네이버로그인</p>
+                            <p>구글로그인</p>
+                            <p>페이스북로그인</p>
                         </div>
                     </form>
                 </div>

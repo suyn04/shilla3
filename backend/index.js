@@ -72,6 +72,9 @@ app.use("/bk/comment", boardCommentRouter(upload));
 // login 라우터 추가
 const loginRouter = require("./controller/login.js");
 app.use("/bk/login", loginRouter(upload));
+// 네이버 로그인 api
+const naverLoginRouter = require("./controller/naverLogin.js");
+app.use("/bk/naverLogin", naverLoginRouter());
 // join 라우터 추가
 const joinRouter = require("./controller/join.js");
 app.use("/bk/join", joinRouter(upload));
@@ -86,9 +89,6 @@ const reservationRouter = require("./controller/reservations.js");
 app.use("/bk/reserve", reservationRouter);
 const offerReserveRouter = require("./controller/reserveOffer.js");
 app.use("/bk/reserve", offerReserveRouter);
-// 결제 api 라우터 추가
-const paymentApiRouter = require("./controller/reservations.js")
-app.use("/api/payment", paymentApiRouter)
 // myPage reserve 라우터 추가
 // const myPageReserveRouter = require("./controller/myPageReservation.js");
 // app.use("/bk/myPage/myReservation", myPageReserveRouter);
@@ -121,6 +121,7 @@ app.use("/bk/sales", salesRouter());
 // 아이디,비밀번호찾기 라우터 추가
 const findRouter = require("./controller/find.js");
 app.use("/bk/find", findRouter);
+
 
 // 위에 거론하지 않은 라우팅 주소는 프론트엔드의 index.html 로 접근
 // app.get("*", (req, res) => {
