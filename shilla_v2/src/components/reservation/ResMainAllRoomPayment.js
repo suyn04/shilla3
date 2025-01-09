@@ -14,13 +14,15 @@ function AllRoomPaymentPage() {
   // 데이터를 갖고옴
   const {
     reservationDate,
+    checkInDate,
+    checkOutDate,
     roomType,
     roomId,
     productId,
     paySum,
     adultCount,
     childrenCount,
-  } = location.state || {};  
+  } = location.state || {};
 
   console.log("체크인, 체크아웃 날짜 : ", reservationDate);
   console.log("객실 : ", roomType);
@@ -68,6 +70,9 @@ function AllRoomPaymentPage() {
       const orderNum = generateOrderNum();
       console.log(orderNum);
 
+      const startDate = checkInDate
+      const endDate = checkOutDate
+
       // 토스페이먼츠 결제창 로드
       const tossPayments = await loadTossPayments(clientKey);
       if (!tossPayments || typeof tossPayments.requestPayment !== "function") {
@@ -81,27 +86,64 @@ function AllRoomPaymentPage() {
           orderId: orderNum, // 고유 주문 ID
           orderName: roomType, // 상품명
           customerName: "홍길동", // 구매자 이름
-          successUrl: `http://localhost:3000/reserve/detail/payment/paymentallroom/payment-success?orderName=${encodeURIComponent(
-            roomType
-          )}&orderId=${encodeURIComponent(
-            orderNum
-          )}&customerName=${encodeURIComponent(
-            "홍길동"
-          )}&reservationDate=${encodeURIComponent(
-            reservationDate
-          )}&roomType=${encodeURIComponent(
-            roomType
-          )}&roomId=${encodeURIComponent(
-            roomId
-          )}&productId=${encodeURIComponent(
-            productId
-          )}&paySum=${encodeURIComponent(
-            paySum
-          )}&adultCount=${encodeURIComponent(
-            adultCount
-          )}&childrenCount=${encodeURIComponent(childrenCount)}`,
-          failUrl:
-            "http://localhost:3000/reserve/detail/payment/paymentallroom/payment-fail",
+          // successUrl: window.location.origin + "/success",
+          //  ?orderName=${encodeURIComponent(
+          //   roomType
+          // )}&orderId=${encodeURIComponent(
+          //   orderNum
+          // )}&customerName=${encodeURIComponent(
+          //   "홍길동"
+          // )}&reservationDate=${encodeURIComponent(
+          //   reservationDate
+          // )}&roomType=${encodeURIComponent(
+          //   roomType
+          // )}&roomId=${encodeURIComponent(
+          //   roomId
+          // )}&productId=${encodeURIComponent(
+          //   productId
+          // )}&paySum=${encodeURIComponent(
+          //   paySum
+          // )}&adultCount=${encodeURIComponent(
+          //   adultCount
+          // )}&childrenCount=${encodeURIComponent(childrenCount)}`,
+          // successUrl: `${
+          //   window.location.origin
+          // }/success?metadata=${encodeURIComponent(
+          //   JSON.stringify({
+          //     startDate,
+          //     endDate,
+          //     roomType,
+          //     roomId,
+          //     productId,
+          //     paySum,
+          //     adultCount,
+          //     childrenCount,
+          //     orderName: roomType, // orderName 설정
+          //     customerName: "홍길동", // customerName 설정
+          //   })
+          // )}`,
+          successUrl: window.location.origin + "/success",
+          failUrl: window.location.origin + "/fail",
+          card: {
+            useEscrow: false,
+            flowMode: "DEFAULT", // 통합결제창 여는 옵션
+            useCardPoint: false,
+            useAppCardOnly: false,
+          },
+          metadata: {
+            reservationInfo: JSON.stringify({
+              startDate,
+              endDate,
+              roomType,
+              roomId,
+              productId,
+              paySum,
+              adultCount,
+              childrenCount,
+              orderName: roomType, // orderName 설정
+              customerName: "홍길동", // customerName 설정
+            }),
+          },
         })
         .then(async () => {
           // 함수가 실행되면 Toss api
@@ -121,17 +163,17 @@ function AllRoomPaymentPage() {
   };
 
   // PaymentPage로 이동
-  navigate("/reserve/detail/payment/paymentallroom/payment-success", {
-    state: {
-      reservationDate: reservationDate,
-      roomType: roomType,
-      roomId: roomId,
-      productId: productId,
-      paySum: paySum,
-      adultCount: adultCount,
-      childrenCount: childrenCount,
-    },
-  });
+  // navigate("/reserve/detail/payment/paymentallroom/payment-success", {
+  //   state: {
+  //     reservationDate: reservationDate,
+  //     roomType: roomType,
+  //     roomId: roomId,
+  //     productId: productId,
+  //     paySum: paySum,
+  //     adultCount: adultCount,
+  //     childrenCount: childrenCount,
+  //   },
+  // });
 
   useEffect(() => {
     window.scrollTo(0, 0);

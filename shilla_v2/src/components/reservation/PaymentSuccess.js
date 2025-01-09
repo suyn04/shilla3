@@ -1,26 +1,44 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const PaymentSuccess = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const [metadata, setMetadata] = useState(null);
   const paymentKey = searchParams.get("paymentKey");
   const orderId = searchParams.get("orderId");
   const amount = searchParams.get("amount");
-  const orderName = searchParams.get("orderName");
-  const customerName = searchParams.get("customerName");
-  const reservationDate = searchParams.get("reservationDate");
-  const roomType = searchParams.get("roomType");
-  const roomId = searchParams.get("roomId");
-  const adultCount = searchParams.get("adultCount");
-  const childrenCount = searchParams.get("childrenCount");
-  const paySum = searchParams.get("paySum");
-  const productId = searchParams.get("productId");
-
   const memberId = sessionStorage.getItem("id");
+
+  // 결제 승인 및 metadata 가져오기
+  useEffect(() => {
+    const fetchPaymentDetails = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:5002/api/payment/confirm",
+          {
+            paymentKey,
+            orderId,
+            amount,
+          }
+        );
+
+        if (response.data && response.data.metadata) {
+          setMetadata(response.data.metadata); // metadata 저장
+        } else {
+          console.error("Metadata를 받아올 수 없음");
+        }
+      } catch (error) {
+        console.error("결제 확인 중 오류 발생:", error);
+        alert("결제를 확인하는 중 오류가 발생");
+      }
+    };
+
+    if (paymentKey && orderId && amount) {
+      fetchPaymentDetails();
+    }
+  }, [paymentKey, orderId, amount]);
 
   const addOneDay = (date) => {
     const newDate = new Date(date);
@@ -28,21 +46,27 @@ const PaymentSuccess = () => {
     return newDate;
   };
 
+  // 예약 테이블에 저장
   const handleReservation = async () => {
     if (!memberId) {
       alert("로그인이 필요합니다");
       navigate("/login");
-      return;
+      return null;
+    }
+
+    if (!metadata) {
+      console.error("Metadata가 로드되지 않음");
+      return null;
     }
 
     const reservationData = {
       memberId: memberId,
-      productId: productId,
-      startDate: reservationDate.split(" ~ ")[0],
-      endDate: reservationDate.split(" ~ ")[1],
-      totPrice: paySum,
-      adultCnt: adultCount,
-      childCnt: childrenCount,
+      productId: metadata.productId, // metadata에서 가져옴
+      startDate: metadata.startDate,
+      endDate: metadata.endDate,
+      totPrice: metadata.paySum,
+      adultCnt: metadata.adultCount,
+      childCnt: metadata.childrenCount,
       cancel: 0,
     };
 
@@ -53,21 +77,22 @@ const PaymentSuccess = () => {
       );
 
       if (response.status === 201) {
-        alert("예약이 완료되었습니다");
+        alert("예약이 완료");
         return response.data.reservationId;
       } else {
-        alert("예약 저장에 실패했습니다");
+        alert("예약 저장에 실패");
         return null;
       }
     } catch (error) {
       console.error("예약 저장 오류:", error);
-      alert("서버에 연결할 수 없습니다. 다시 시도해주세요");
+      alert("서버에 연결할 수 없음");
       return null;
     }
   };
 
+  // 결제 테이블에 저장
   const handlePayment = async (reservationId) => {
-    const paymentId = orderId
+    const paymentId = orderId;
     const paymentDate = addOneDay(new Date())
       .toISOString()
       .slice(0, 19)
@@ -97,54 +122,56 @@ const PaymentSuccess = () => {
           navigate("/");
         }
       } else {
-        alert("결제 저장에 실패했습니다");
+        alert("결제 저장에 실패");
       }
     } catch (error) {
       console.error("결제 저장 오류:", error);
-      alert("서버에 연결할 수 없습니다.");
+      alert("서버에 연결할 수 없음");
     }
   };
 
-  const confirmPayment = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:5002/api/payment/confirm",
-        {
-          paymentKey,
-          orderId,
-          amount,
-          orderName,
-          customerName,
-        }
-      );
-      alert("결제가 완료되었습니다!");
-
-      // 예약 및 결제 table에 데이터 추가가
-      const reservationId = await handleReservation();
-      if (reservationId) {
-        await handlePayment(reservationId);
-      }
-    } catch (error) {
-      console.error("예약 및 결제 table 데이터 추가 에러:", error);
-      alert("예약 및 결제 table 데이터 추가 에러");
-    }
-  };
-
+  // 예약 및 결제 처리
   useEffect(() => {
-    if (paymentKey && orderId && amount && orderName && customerName) {
-      confirmPayment();
-    }
-  }, [paymentKey, orderId, amount, orderName, customerName]);
+    const processReservationAndPayment = async () => {
+      if (metadata) {
+        const reservationId = await handleReservation();
+        if (reservationId) {
+          await handlePayment(reservationId);
+        }
+      }
+    };
+
+    processReservationAndPayment();
+  }, [metadata]); // metadata가 업데이트된 후 실행
 
   return (
     <div>
       <h1>결제가 완료되었습니다!</h1>
-      <div>
-        <p><strong>주문번호:</strong> {orderId}</p>
-        <p><strong>결제 객실:</strong> {orderName}</p>
-        <p><strong>고객이름:</strong> {customerName}</p>
-        <p><strong>결제된 가격:</strong> {amount}원</p>
-      </div>
+      {metadata ? (
+        <div>
+          <p>
+            <strong>주문번호:</strong> {orderId}
+          </p>
+          <p>
+            <strong>예약 날짜:</strong> {metadata.startDate} ~ {metadata.endDate}
+          </p>
+          <p>
+            <strong>객실 타입:</strong> {metadata.roomType} [{metadata.roomId}호]
+          </p>
+          <p>
+            <strong>고객 이름:</strong> {metadata.customerName}
+          </p>
+          <p>
+            <strong>이용 인원:</strong> 성인 {metadata.adultCount}명, 어린이{" "}
+            {metadata.childrenCount}명
+          </p>
+          <p>
+            <strong>결제 금액:</strong> {metadata.paySum}원
+          </p>
+        </div>
+      ) : (
+        <p>결제 정보를 불러오는 중입니다...</p>
+      )}
     </div>
   );
 };

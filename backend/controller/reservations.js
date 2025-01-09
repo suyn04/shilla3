@@ -6,6 +6,8 @@ const axios = require('axios');
 // 예약 가능한 객실 및 패키지 조회
 router.post('/', async (req, res) => {
   const { startDate, endDate } = req.body;
+  console.log("startDate : ",startDate)
+  console.log("endDate : ",endDate)
 
   try {
 
@@ -119,19 +121,30 @@ router.post('/detail', async (req, res) => {
 const SECRET_KEY = 'test_sk_AQ92ymxN34PeKWvLOJKy3ajRKXvd'; // 토스페이먼츠 시크릿 키
 
 router.post('/confirm', async (req, res) => {
-  const { paymentKey, orderId, amount, orderName, customerName } = req.body;
+  const { paymentKey, orderId, amount} = req.body;
   console.log('요청 데이터:', req.body);
 
   try {
     const authHeader = `Basic ${Buffer.from(`${SECRET_KEY}:`).toString('base64')}`;
     const response = await axios.post(
       'https://api.tosspayments.com/v1/payments/confirm',
-      { paymentKey, orderId, amount, orderName, customerName },
+      { paymentKey, orderId, amount},
       { headers: { Authorization: authHeader, 'Content-Type': 'application/json' } }
     );
+    
 
-    res.json({ message: '결제 승인 완료', data: response.data });
-    console.log('토스페이먼츠 응답:', response.data);
+    // Toss Payments 응답 데이터에서 metadata 추출
+    const metadata = response.data.metadata
+      ? JSON.parse(response.data.metadata.reservationInfo) // JSON 문자열을 파싱
+      : {};
+
+    res.json({
+      message: '결제 승인 완료',
+      data: response.data,
+      metadata: metadata, // 클라이언트로 metadata 전달
+    });
+
+    console.log('토스페이먼츠 응답 : ', response.data)
   } catch (error) {
     if (error.response) {
       console.error('결제 승인 오류 (응답 있음):', error.response.data);
