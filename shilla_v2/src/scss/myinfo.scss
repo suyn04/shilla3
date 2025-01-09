@@ -17,9 +17,10 @@
         }
 
         .info-group {
-            #pid {
-                width: calc(100% - 120px);
-                margin-right: 10px;
+            #pid,
+            #cphone {
+                width: calc(100% - 115px);
+                margin-right: 5px;
             }
             .input-container {
                 display: flex;
@@ -101,11 +102,9 @@
                     #middle,
                     #last {
                         position: relative;
-                        width: calc((100% - 10px) / 3);
+                        width: calc((75% - 10px) / 3);
                         text-align: center;
-                    }
-                    #last {
-                        margin-right: 0px;
+                        margin-right: 5px;
                     }
                 }
                 #submit {

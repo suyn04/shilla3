@@ -169,6 +169,7 @@ const JoinCont2 = () => {
                         <JoinPw valid={isPwValid} setValid={setPwValid} setPw={setPw} />
                         {/* 연락처 입력 */}
                         <JoinPhone valid={isPhoneValid} setValid={setPhoneValid} setPhone={setPhone} />
+
                         {/* 이메일 입력 */}
                         <JoinEmail
                             valid={isEmailValid}
