@@ -15,15 +15,21 @@ const JoinPhone = ({ valid, setValid, setPhone }) => {
 
     // 본인인증번호 발송
     const handlePhoneChk = () => {
-        setPhoneChk(true);
-        axios
-            .get(`${bkURL}/check/sms`)
-            .then((res) => {
-                setRandomNum(res.data);
-            })
-            .catch((err) => {
-                console.error('에러발생 : ', err);
-            });
+        validatePhoneNumber(startNum, middleNum, lastNum); // 유효성 검사 실행
+        if (valid) {
+            setPhoneChk(true);
+            alert('인증번호 발송되었습니다.');
+            axios
+                .get(`${bkURL}/check/sms`)
+                .then((res) => {
+                    setRandomNum(res.data);
+                })
+                .catch((err) => {
+                    console.error('에러발생 : ', err);
+                });
+        } else {
+            setErrorMessage('유효한 전화번호를 입력해주세요.');
+        }
     };
 
     // 본인인증 번호 확인
@@ -31,7 +37,7 @@ const JoinPhone = ({ valid, setValid, setPhone }) => {
         console.log('cphone', cphone, 'randomNum', randomNum);
         if (cphone == randomNum) {
             setIsReadOnly(true);
-            alert('일치합니다');
+            alert('본인인증 되었습니다.');
         } else {
             alert('일치하지 않습니다');
         }
