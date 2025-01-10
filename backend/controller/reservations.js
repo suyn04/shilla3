@@ -69,7 +69,8 @@ router.post("/save", async (req, res) => {
 
 // 결제 저장 API
 router.post('/savepayment', async (req, res) => {
-  const { reservationId, paymentAmount, paymentId } = req.body;
+  const { reservationId, paymentAmount, paymentId, paymentKey, paymentMethod } = req.body;
+  console.log(reservationId, paymentAmount, paymentId, paymentKey, paymentMethod)
 
   try {
     // 8자리 랜덤 결제 ID 생성
@@ -80,9 +81,9 @@ router.post('/savepayment', async (req, res) => {
 
     // 결제 정보를 payment 테이블에 저장
     const result = await db.execute(
-      `INSERT INTO payment (payment_id, reservation_id, payment_date, payment_amount, refund, refund_date, refund_amount)
-       VALUES (?, ?, ?, ?, '0', NULL, NULL)`,
-      [paymentId, reservationId, paymentDate, paymentAmount]
+      `INSERT INTO payment (payment_id, reservation_id, payment_key, payment_method, payment_date, payment_amount, refund, refund_date, refund_amount)
+       VALUES (?, ?, ?, ?, ?, ?, '0', NULL, NULL)`,
+      [paymentId, reservationId, paymentKey, paymentMethod, paymentDate, paymentAmount]
     );
 
     // 결제 정보 저장이 성공적으로 완료되면 성공 메시지 반환

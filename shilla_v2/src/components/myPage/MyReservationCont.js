@@ -41,8 +41,11 @@ const MyReservationCont = () => {
             { params: { member_id: memberId } }
           );
 
+          console.log("API 응답 데이터: ", response.data);
+
           // 데이터 확인을 위해 로그 출력
           console.log("예약 데이터 가져오기 :", response.data);
+          setReservations(response.data);
 
           // 날짜 형식 변환
           const formattedData = response.data.map((res) => ({
@@ -70,27 +73,26 @@ const MyReservationCont = () => {
     return <div>예약 내역이 없습니다</div>;
   }
 
-  const handleCancel = async (reservationId, totPrice) => {
-    console.log("reservationId : ", reservationId);
-    const confirmCancel = window.confirm(
-      "해당 객실상품을 예약 취소하겠습니까?"
-    );
+  const handleCancel = async (reservationId, totPrice, paymentKey) => {
+    console.log("reservationId: ", reservationId, "totPrice: ", totPrice, "paymentKey: ", paymentKey);
+
+    // if (!paymentKey) {
+    //   alert("결제 키가 존재하지 않아서 취소 불가능");
+    //   return;
+    // }
+  
+    const confirmCancel = window.confirm("해당 객실상품을 예약 취소하겠습니까?");
     if (confirmCancel) {
       try {
-        await axios.post(
-          "http://localhost:5002/bk/myPage/myReservation/cancel",
-          {
-            reservationId,
-            totPrice,
-          }
-        );
-        alert("예약이 취소되었습니다.");
-
-        // 예약 목록 갱신
+        const response = await axios.post("http://localhost:5002/bk/myPage/myReservation/cancel", {
+          reservationId,
+          totPrice,
+          paymentKey,
+        });
+  
+        alert("예약이 취소되었습니다");
         setReservations((prev) =>
-          prev.filter(
-            (reservation) => reservation.reservation_id !== reservationId
-          )
+          prev.filter((reservation) => reservation.reservation_id !== reservationId)
         );
       } catch (error) {
         console.error("예약 취소 오류:", error);
@@ -113,6 +115,7 @@ const MyReservationCont = () => {
 
           // 각 예약 항목 출력
           console.log("예약 item:", res);
+          console.log("결제 키 확인: ", res.payment_key); // paymentKey 값 확인
 
           return (
             <div className="reser-room" key={res.reservation_id}>
@@ -155,7 +158,7 @@ const MyReservationCont = () => {
                 <button
                   className="cancle-btn"
                   onClick={() =>
-                    handleCancel(res.reservation_id, res.tot_price)
+                    handleCancel(res.reservation_id, res.tot_price, res.payment_key)
                   }
                 >
                   예약취소
