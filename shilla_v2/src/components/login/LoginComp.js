@@ -52,60 +52,78 @@ const LoginComp = () => {
                 }
 
             }).catch(err => {
-                console.log('서버에러 발생 : ', err);
+                console.error('서버에러 발생 : ', err);
             });
     }
 
     // 키보드에서 엔터가 눌렸을 때 로그인 함수 호출
     function handleKeyDown(event) {
         if (event.key === 'Enter') {
-        loginGo();
+            loginGo();
         }
     }
     // 네이버 로그인파트
-    const [user, setUser] = useState(null);//사용자 정보 가져오기
+    // const [user, setUser] = useState(null);//사용자 정보 가져오기
     function naverLoginBtn(){
         window.location.href = `${bkURL}/naverLogin`;//메인으로 이동 
     }
 
-    // const { naver } = window;
-    // const [user, setUser] = useState(null);//사용자 정보 가져오기
-    // const [showExternalLogin, setShowExternalLogin] = useState(true)
+    const callBackFunction = async ()=>{//callback
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code')
+        const state = params.get('state')
 
-    // // 예시: React 컴포넌트에서 환경 변수 사용
-    // let clientId = process.env.REACT_APP_CLIENT_ID;
-    // let clientSecret = process.env.REACT_APP_CLIENT_SECRET;
-    // let redirectURI = process.env.REACT_APP_REDIRECT_URI;
+        if(code && state){//서버에서 사용자 정보 가져오는법
+            const response = await fetch(`${bkURL}/naverLogin/callback?code=${code}&state=${state}`)
+            const userData = await response.json();
+            console.log(userData)
 
-    // const naverLogin = new naver.LoginWithNaverId({
-    //     clientId: process.env.REACT_APP_CLIENT_ID,
-    //     clientSecret : process.env.REACT_APP_CLIENT_SECRET,
-    //     callbackUrl: process.env.REACT_APP_REDIRECT_URI,
-    //     isPopup: true,
-    //     loginButton: {
-    //       color: "green",
-    //       type: 3,// 타입종류 :1,2,3
-    //       height: 50,
-    //     },
-    //   });
-    // useEffect(() => {
-    //     naverLogin.init();//최초 1번 초기화시킴킴
-    //     // console.log("네이버 초기화");
-    //     getUser();//사용자 정보 가져옴 
-    // }, []);
+            if(userData && userData.user){
+                const user = userData.user;
 
-    // const getUser = async () => {
-    //     await naverLogin.getLoginStatus((status) => {
-    //         console.log(`로그인?: ${status}`);
-    //         if (status) {
-    //             setUser({ ...naverLogin.user });//로그인 정보 가져오기
-    //             window.opener.location.href="http://localhost:3000/callback";//메인으로 이동 
-    //             window.close();//팝업은 닫기 
-    //         }
-    //     });
-    // };
-    // console.log(naverLogin)
+                axios.post(`${bkURL}/login`, {id:user.id, name:user.name, grade:user.grade})
+                .then(res => {
+                    console.log('서버 응답:', res.data);
+                    if (res.data) {
+                        const mem = res.data;
+    
+                        // 세션정보 저장
+                        sessionStorage.setItem("id", mem.id);
+                        sessionStorage.setItem("name", mem.name);
+                        sessionStorage.setItem("grade", mem.grade);
+    
+                        alert(`${mem.name}님, 로그인 성공`);
+                        navigate("/");
+    
+                    } else {
+                        alert("로그인 실패");
+                    }
+    
+                }).catch(err => {
+                    console.error('서버에러 발생 : ', err);
+                });
+            }
+        }
+    }
+    
+    //url에 code와  state가 이미 있다면 callback으로 넘김
+    if(window.location.search.includes('code')&&window.location.search.includes('state')){
+        callBackFunction();
+    }
 
+    const checkNaverLogin = async ()=>{
+        try{
+            const response = await fetch(`${bkURL}/naverLogin/check`);
+            const data = await response.json();
+            if(data.loggedIn){
+                console.log('로그인되지 않음')
+            }
+        }
+        catch(err){
+            console.error('네이버 세션 상태 확인', 'err')
+        }
+    }
+    checkNaverLogin();
 
     return (
         <>
