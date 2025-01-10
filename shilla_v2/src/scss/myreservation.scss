@@ -2,7 +2,7 @@
     display: flex;
     width: 100%;
 
-    .depth3-tab-wrap.my-page{
+    .depth3-tab-wrap.my-page {
         .tab {
             li {
                 width: calc(100% / 3);
@@ -27,7 +27,8 @@
             margin-top: 20px;
         }
 
-        .reservation {
+        .reservation,
+        .past-reservation {
             padding: 0;
             width: 100%;
             display: flex;
@@ -88,10 +89,27 @@
                 }
             }
         }
+
+        .past-reservation {
+            margin-top: 50px; /* 지난 예약과 현재 예약 섹션 간격 */
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+
+            .info-title {
+                font-size: 16px;
+                font-weight: 600;
+                color: #333; /* 지난 예약 제목은 연한 색상으로 */
+                margin-bottom: 20px;
+            }
+
+            .reser-room {
+                opacity: 0.8; /* 지난 예약은 흐릿하게 표현 */
+            }
+        }
     }
 }
 
-//반응형
+// 반응형
 @media screen and (max-width: 768px) {
     .container {
         display: flex;
@@ -121,7 +139,8 @@
                 color: #333;
             }
 
-            .reservation {
+            .reservation,
+            .past-reservation {
                 width: 100%;
                 display: flex;
                 flex-direction: column;
@@ -137,7 +156,6 @@
                     border: 1px solid #e0e0e0;
                     border-radius: 10px;
                     box-sizing: border-box;
-                    width: 100%;
                     gap: 20px;
                     flex-direction: column;
                     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -179,6 +197,23 @@
                             line-height: 1.5;
                         }
                     }
+                }
+            }
+
+            .past-reservation {
+                margin-top: 50px;
+                border-top: 1px solid #e0e0e0;
+                padding-top: 20px;
+
+                .info-title {
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #333;
+                    margin-bottom: 20px;
+                }
+
+                .reser-room {
+                    opacity: 0.8; /* 흐릿하게 표현 */
                 }
             }
         }
