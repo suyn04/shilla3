@@ -18,9 +18,10 @@ const JoinPhone = ({ valid, setValid, setPhone }) => {
         validatePhoneNumber(startNum, middleNum, lastNum); // 유효성 검사 실행
         if (valid) {
             setPhoneChk(true);
-            alert('인증번호 발송되었습니다.');
+            const phoneNum = `${startNum}${middleNum}${lastNum}`.trim();
+            alert(`인증번호 발송되었습니다.`);
             axios
-                .get(`${bkURL}/check/sms`)
+                .post(`${bkURL}/check/sms`, { phoneNum: phoneNum }, { headers: { 'Content-Type': 'application/json' } })
                 .then((res) => {
                     setRandomNum(res.data);
                 })
