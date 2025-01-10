@@ -97,16 +97,23 @@ const PaymentSuccess = () => {
       .toISOString()
       .slice(0, 19)
       .replace("T", " ");
+    const payment_key = paymentKey;
+    console.log("결제 키:", payment_key);
+    console.log("결제 방법:", metadata.paymentMethod);
 
     const paymentData = {
       paymentId: paymentId,
       reservationId: reservationId,
+      paymentKey: payment_key,
+      paymentMethod: metadata.paymentMethod,
       paymentDate: paymentDate,
       paymentAmount: amount,
       refund: "0",
       refundDate: null,
       refundAmount: null,
     };
+
+    console.log(paymentData);
 
     try {
       const paymentResponse = await axios.post(
@@ -153,10 +160,12 @@ const PaymentSuccess = () => {
             <strong>주문번호:</strong> {orderId}
           </p>
           <p>
-            <strong>예약 날짜:</strong> {metadata.startDate} ~ {metadata.endDate}
+            <strong>예약 날짜:</strong> {metadata.startDate} ~{" "}
+            {metadata.endDate}
           </p>
           <p>
-            <strong>객실 타입:</strong> {metadata.roomType} [{metadata.roomId}호]
+            <strong>객실 타입:</strong> {metadata.roomType} [{metadata.roomId}
+            호]
           </p>
           <p>
             <strong>고객 이름:</strong> {metadata.customerName}
