@@ -136,7 +136,7 @@ function AllRoomPaymentPage() {
     <div className={styles.paymentContainer}>
       <h2>결제정보</h2>
       <form className={styles.paymentForm}>
-        <div className={styles.reserveDate}> 예약날짜 : {reservationDate}</div>
+        <div className={styles.reserveDate}> 예약날짜 : {checkInDate} ~ {checkOutDate}</div>
         <div className={styles.roomType}>
           {" "}
           룸이름 : {roomType} [{roomId}호]

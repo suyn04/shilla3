@@ -141,6 +141,8 @@ router.post('/confirm', async (req, res) => {
 
     res.json({
       message: '결제 승인 완료',
+      method: response.data.method,
+      easyPay: response.data.easyPay,
       data: response.data,
       metadata: metadata, // 클라이언트로 metadata 전달
     });

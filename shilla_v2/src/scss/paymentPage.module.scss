@@ -1,6 +1,6 @@
 .paymentContainer {
   max-width: 600px;
-  height: 570px;
+  height: 450px;
   margin: 200px auto;
   padding: 20px;
   background-color: #f8f9fa;
@@ -17,14 +17,17 @@
   }
 
   .paymentForm {
+    padding-left: 120px;
+    padding-right: 0px;
+    margin-bottom: 20px;
     .reserveDate{
       font-size: 17px;
       font-weight: 600;
       margin-bottom: 8px;
       // display: ;
-      .resDate{
+      // .resDate{
 
-      }
+      // }
     }
 
     .roomName{
@@ -42,33 +45,12 @@
     .avaCount{
       font-size: 17px;
       font-weight: 600;
-      margin-bottom: 15px;
-    }
-
-    .formGroup {
-      margin-bottom: 17px;
-      font-weight: 600;
-
-      label {
-        display: block;
-        font-size: 16px;
-        color: #495057;
-        margin-bottom: 5px;
-      }
-
-      input {
-        width: 100%;
-        padding: 10px;
-        font-size: 14px;
-        border: 1px solid #ced4da;
-        border-radius: 5px;
-        box-sizing: border-box;
-      }
+      margin-bottom: 75px;
     }
     .totPrice{
       font-size: 17px;
       font-weight: 600;
-      margin-bottom: 8px;
+      margin-bottom: 3px;
     }
   }
 
