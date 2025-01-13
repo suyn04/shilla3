@@ -71,6 +71,22 @@ main {
             height: 100vh;
             min-height: 900px;
         }
+
+        // 날씨 정보 스타일
+        .weather-info {
+            position: absolute; /* 스와이퍼 위에 겹쳐 표시 */
+            top: 115px; 
+            right: 20px; 
+            z-index: 10; /* 다른 요소 위에 표시 */
+            background: rgba(0, 0, 0, 0.3); /* 더 투명한 배경 */
+            color: rgba(255, 255, 255, 0.8); /* 흰색 텍스트도 살짝 투명하게 */
+            padding: 10px 15px; /* 내부 여백 */
+            border-radius: 8px; /* 모서리 둥글게 */
+            font-size: 14px; /* 폰트 크기 */
+            line-height: 1.5; /* 줄 간격 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 약간의 그림자 */
+            transition: background 0.3s ease, color 0.3s ease; /* 상태 변화 시 부드러운 전환 */
+        }
       
         .swiper-slide {
             background-position: center;
@@ -837,6 +853,7 @@ main {
                 height: 80vh;
                 min-height: 700px;
             }
+
             .swiper-slide {
                 .txt-box {
                     & > h2 {
@@ -1204,6 +1221,13 @@ main {
             .swiper {
                 height: 70vh;
                 min-height: 600px;
+            }
+
+            .weather-info {
+                top: 100px;
+                right: 20px;
+                font-size: 13px;
+                padding: 5px 10px;
             }
           
             .swiper-slide {
