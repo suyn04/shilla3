@@ -206,7 +206,7 @@ function App() {
                 </Route>
                 {/* 로그인 */}
                 <Route path="/login" element={<Login></Login>}></Route>
-                <Route path="/callback" element={<LoginCallback/>}></Route>
+                <Route path="/callback" element={<LoginCallback></LoginCallback>}></Route>
                 {/* 회원가입 */}
                 <Route path="/Join" element={<JoinComp1></JoinComp1>}></Route>
                 <Route path="/myinfo" element={<JoinComp2></JoinComp2>}></Route>

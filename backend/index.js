@@ -6,11 +6,6 @@ const cors = require('cors'); // 다른 포트에서 들어와도 열어주는 �
 const multer = require('multer'); // 자동으로 파일 업로드 처리를 해주겠다.
 const path = require('path');
 
-app.use(cors()); //다른 포트에서 들어와도 열어주도록 cors 세팅
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json()); // JSON 파싱 미들웨어 추가
-
 // 세션 설정
 app.use(
     session({
@@ -23,6 +18,15 @@ app.use(
         },
     })
 );
+
+// app.use(cors()); //다른 포트에서 들어와도 열어주도록 cors 세팅
+app.use(cors({
+    origin: 'http://localhost:3000',  // React 클라이언트 URL
+    credentials: true,  // 쿠키 포함
+}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json()); // JSON 파싱 미들웨어 추가
 
 // static 폴더 설정 --> 이미지 파일 프론트 엔드에 서빙
 app.use('/bk/files', express.static(path.join(__dirname, 'files')));
