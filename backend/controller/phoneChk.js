@@ -23,7 +23,7 @@ module.exports = () => {
                 {
                     to: phoneNum,
                     from: '01041402608',
-                    text: `본인인증번호:${randomNum}`,
+                    text: `[신라호텔]본인인증번호:${randomNum}`,
                 },
                 // 1만건까지 추가 가능
             ])
