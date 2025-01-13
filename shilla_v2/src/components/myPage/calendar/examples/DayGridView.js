@@ -33,7 +33,7 @@ const DayGridView = ({reservations}) => {
             googleCalendarId:
               "5bbee420cab5c6ca04f16c53eaf7b51345a63c30d1abd7bf4866680c52079235@group.calendar.google.com",
             className: "google-event", // Google Calendar 이벤트에 추가 스타일 클래스
-            color: "#f39c12", // Google Calendar 일정에 대한 색상 설정
+            color: "#F29661", // Google Calendar 일정에 대한 색상 설정
             textColor: "#ffffff", // 텍스트 색상
           },
         ]}
