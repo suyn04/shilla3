@@ -43,33 +43,16 @@ const MyReservationCont = () => {
             { params: { member_id: memberId } }
           );
 
-          console.log("API 응답 데이터: ", response.data);
-          console.log("예약 데이터 가져오기 :", response.data);
-
           const today = new Date();
-          console.log("today :", today);
           const formattedDate = formatDate(today) 
-          console.log("formattedDate: ", formattedDate);
 
           const currentReservations = response.data.filter((res) => {
             const endDate = formatDate(new Date(res.end_date));
-            console.log(
-              "종료 날짜: ",
-              endDate,
-              "현재 날짜와 비교: ",
-              endDate >= formattedDate
-            );
             return endDate >= formattedDate; // 종료 날짜가 오늘 이후인 경우
           });
 
           const previousReservations = response.data.filter((res) => {
             const endDate = formatDate(new Date(res.end_date));
-            console.log(
-              "종료 날짜: ",
-              endDate,
-              "현재 날짜와 비교: ",
-              endDate < formattedDate
-            );
             return endDate < formattedDate; // 종료 날짜가 오늘 이전인 경우
           });
 
@@ -99,6 +82,13 @@ const MyReservationCont = () => {
       fetchReservations();
     }
   }, [memberId]);
+
+  const handleScrollToCalendar = () => {
+    const calendarElement = document.querySelector(".calendar-wrap");
+    if (calendarElement) {
+      calendarElement.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   if (error) {
     return <div>{error}</div>;
@@ -197,7 +187,28 @@ const MyReservationCont = () => {
   return (
     <div className="reservate-info" id="reservate-info">
       <div className="reservation">
-        <div className="info-title">현재 예약된 내역</div>
+      
+
+        <div className="info-title">현재 예약된 내역
+        <button
+        className="scroll-to-calendar-btn"
+        onClick={handleScrollToCalendar}
+        style={{
+          width: "60px",
+          marginLeft: "10px",
+          bottom: "0px",
+          padding: "5px 5px",
+          backgroundColor: "#7A6C64",
+          color: "#fff",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        캘린더
+      </button>
+        </div>
         {reservations.length > 0 ? (
           reservations.map((res) => renderReservation(res))
         ) : (
