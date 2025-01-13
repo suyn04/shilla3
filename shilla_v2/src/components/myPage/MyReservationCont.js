@@ -73,6 +73,21 @@ const MyReservationCont = () => {
             return endDate < formattedDate; // 종료 날짜가 오늘 이전인 경우
           });
 
+          // const currentReservations = response.data.filter((res) => {
+          //   const endDate = formatDate(new Date(res.end_date));
+          //   console.log("종료 날짜: ", endDate, "현재 날짜와 비교: ", endDate >= formattedDate);
+          //   return endDate >= formattedDate;
+          // });
+  
+          // const previousReservations = response.data.filter((res) => {
+          //   const endDate = formatDate(new Date(res.end_date));
+          //   console.log("종료 날짜: ", endDate, "현재 날짜와 비교: ", endDate < formattedDate);
+          //   return endDate < formattedDate;
+          // });
+  
+          // console.log("현재 예약된 내역: ", currentReservations);
+          // console.log("지난 예약 내역: ", previousReservations);
+
           setReservations(currentReservations);
           setPastReservations(previousReservations);
         } catch (error) {
@@ -197,20 +212,32 @@ const MyReservationCont = () => {
           <div>지난 예약 내역이 없습니다</div>
         )}
 
-        {/* DayGridView 캘린더 추가 */}
-      <div className="calendar-wrap">
-        <h3>예약 캘린더</h3>
-        <DayGridView 
-          reservations={reservations.map((res) => ({
-            title: `${res.offer_name || res.room_type}`, // 이벤트 제목: 패키지명 또는 객실 타입
-            start: res.start_date, // 예약 시작일
-            end: res.end_date 
-              ? new Date(new Date(res.end_date).setDate(new Date(res.end_date).getDate() + 1))
-              .toISOString()
-              .split("T")[0]
-            : res.start_date, // 예약 종료일
-          }))}/>
-      </div>
+<div className="calendar-wrap">
+  <h3>예약 캘린더</h3>
+  <DayGridView
+    reservations={[
+      ...reservations.map((res) => ({
+        title: `${(res.offer_name || res.room_type || "").trim()} [${res.room_id || "N/A"}호]`, // 이벤트 제목: 패키지명 또는 객실 타입
+        start: new Date(res.start_date).toISOString(), // 시작일: ISO 형식으로 변환
+        end: res.end_date
+          ? new Date(new Date(res.end_date).setDate(new Date(res.end_date).getDate() + 1))
+              .toISOString() // 종료일: ISO 형식으로 변환 후 하루 추가
+          : new Date(res.start_date).toISOString(), // 종료일이 없는 경우 시작일로 대체
+      })),
+      ...pastReservations.map((res) => ({
+        title: `${(res.offer_name || res.room_type || "").trim()} [${res.room_id || "N/A"}호]`, // 지난 예약임을 표시
+        start: new Date(res.start_date).toISOString(), // 시작일: ISO 형식으로 변환
+        end: res.end_date
+          ? new Date(new Date(res.end_date).setDate(new Date(res.end_date).getDate() + 1))
+              .toISOString() // 종료일: ISO 형식으로 변환 후 하루 추가
+          : new Date(res.start_date).toISOString(), // 종료일이 없는 경우 시작일로 대체
+      })),
+    ]}
+  />
+</div>
+
+
+
 
       </div>
     </div>

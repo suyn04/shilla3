@@ -7,6 +7,13 @@ const DayGridView = ({reservations}) => {
 
   return (
     <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+      <style>
+        {`
+          .fc-event-time {
+            display: none;
+          }
+        `}
+      </style>
       <FullCalendar
         plugins={[dayGridPlugin, googleCalendarPlugin]} // Google Calendar 플러그인 포함
         initialView="dayGridMonth"
