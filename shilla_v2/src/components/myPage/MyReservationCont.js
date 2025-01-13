@@ -88,10 +88,6 @@ const MyReservationCont = () => {
     return <div>{error}</div>;
   }
 
-  if (!reservations.length) {
-    return <div>예약 내역이 없습니다</div>;
-  }
-
   const handleCancel = async (reservationId, totPrice, paymentKey) => {
     console.log(
       "reservationId: ",
@@ -189,7 +185,7 @@ const MyReservationCont = () => {
         {reservations.length > 0 ? (
           reservations.map((res) => renderReservation(res))
         ) : (
-          <div>예약 내역이 없습니다</div>
+          <div></div>
         )}
       </div>
       <div className="past-reservation">
