@@ -35,17 +35,18 @@ const NaverLogin = () => {
                     // }
     
                     // 세션정보 저장
-                    sessionStorage.setItem("id", mem.member_id);
-                    sessionStorage.setItem("name", mem.name);
-                    sessionStorage.setItem("grade", mem.grade);
+                    // sessionStorage.setItem("id", mem.member_id);
+                    // sessionStorage.setItem("name", mem.name);
+                    // sessionStorage.setItem("grade", mem.grade);
     
+                    alert(`로그인 성공`);
                     // alert(`${mem.name}님, 로그인 성공`);
-                    setUser({
-                        id: mem.member_id,
-                        name: mem.name,
-                        grade: mem.grade,
-                    });
-                    setIsLoggedIn(true);
+                    // setUser({
+                    //     id: mem.member_id,
+                    //     name: mem.name,
+                    //     grade: mem.grade,
+                    // });
+                    // setIsLoggedIn(true);
                     // navigate("/");
     
                 } else {
