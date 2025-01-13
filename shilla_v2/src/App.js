@@ -55,6 +55,7 @@ import Bakery from "./components/dining/Bakery";
 
 // login
 import Login from "./components/login/Login";
+import LoginCallback from "./components/login/LoginCallback";
 
 // join
 import JoinComp1 from "./components/join/JoinComp1";
@@ -205,6 +206,7 @@ function App() {
                 </Route>
                 {/* 로그인 */}
                 <Route path="/login" element={<Login></Login>}></Route>
+                <Route path="/callback" element={<LoginCallback/>}></Route>
                 {/* 회원가입 */}
                 <Route path="/Join" element={<JoinComp1></JoinComp1>}></Route>
                 <Route path="/myinfo" element={<JoinComp2></JoinComp2>}></Route>

@@ -3,33 +3,17 @@ import {Link,useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import '../../scss/common.scss'
 import '../../scss/login.scss'
-import NaverLogin from "./NaverLogin";
 
 const bkURL = process.env.REACT_APP_BACK_URL;
 
 const LoginComp = () => {
 
     const navigate = useNavigate()
-    const [user, setUser] = useState(null) // 로그인된 사용자 정보 상태
-    const [isLoggedIn, setIsLoggedIn] = useState(false) // 로그인 상태
-
-    //로그인 세션 확인
-    useEffect(() => {
-        const loggedInUser = sessionStorage.getItem('id');
-        if (loggedInUser) {
-            setIsLoggedIn(true)//로그인 상태 업데이트
-            setUser({
-                id: sessionStorage.getItem('id'),
-                name: sessionStorage.getItem('name'),
-                grade: sessionStorage.getItem('grade')
-            });
-        }
-    }, []);
 
 
     function loginGo() {
-        const frmData = new FormData(document.loginFrm)//아래 폼태그 name값 가져옴
-        const data = Object.fromEntries(frmData)
+        const frmData = new FormData(document.loginFrm); // 아래 폼태그 name 값 가져옴
+        const data = Object.fromEntries(frmData);
 
         console.log('loginGo() 진입');
         console.log(data);
@@ -61,12 +45,6 @@ const LoginComp = () => {
                     sessionStorage.setItem("grade", mem.grade);
 
                     alert(`${mem.name}님, 로그인 성공`);
-                    setUser({
-                        id: mem.member_id,
-                        name: mem.name,
-                        grade: mem.grade,
-                    });
-                    setIsLoggedIn(true);
                     navigate("/");
 
                 } else {
@@ -75,7 +53,6 @@ const LoginComp = () => {
 
             }).catch(err => {
                 console.error('서버에러 발생 : ', err);
-                alert('로그인 중 오류가 발생했습니다.');
             });
     }
 
@@ -85,7 +62,68 @@ const LoginComp = () => {
             loginGo();
         }
     }
+    // 네이버 로그인파트
+    // const [user, setUser] = useState(null);//사용자 정보 가져오기
+    function naverLoginBtn(){
+        window.location.href = `${bkURL}/naverLogin`;//메인으로 이동 
+    }
 
+    const callBackFunction = async ()=>{//callback
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code')
+        const state = params.get('state')
+
+        if(code && state){//서버에서 사용자 정보 가져오는법
+            const response = await fetch(`${bkURL}/naverLogin/callback?code=${code}&state=${state}`)
+            const userData = await response.json();
+            console.log(userData)
+
+            if(userData && userData.user){
+                const user = userData.user;
+
+                axios.post(`${bkURL}/login`, {id:user.id, name:user.name, grade:user.grade})
+                .then(res => {
+                    console.log('서버 응답:', res.data);
+                    if (res.data) {
+                        const mem = res.data;
+    
+                        // 세션정보 저장
+                        sessionStorage.setItem("id", mem.id);
+                        sessionStorage.setItem("name", mem.name);
+                        sessionStorage.setItem("grade", mem.grade);
+    
+                        alert(`${mem.name}님, 로그인 성공`);
+                        navigate("/");
+    
+                    } else {
+                        alert("로그인 실패");
+                    }
+    
+                }).catch(err => {
+                    console.error('서버에러 발생 : ', err);
+                });
+            }
+        }
+    }
+    
+    //url에 code와  state가 이미 있다면 callback으로 넘김
+    if(window.location.search.includes('code')&&window.location.search.includes('state')){
+        callBackFunction();
+    }
+
+    const checkNaverLogin = async ()=>{
+        try{
+            const response = await fetch(`${bkURL}/naverLogin/check`);
+            const data = await response.json();
+            if(data.loggedIn){
+                console.log('로그인되지 않음')
+            }
+        }
+        catch(err){
+            console.error('네이버 세션 상태 확인', 'err')
+        }
+    }
+    checkNaverLogin();
 
     return (
         <>
@@ -116,9 +154,12 @@ const LoginComp = () => {
                                 <Link to="/findid">ID/PW찾기</Link>
                             </div>
 
+                            {/* <p id="naverIdLogin">네이버로그인</p> */}
+                            <p onClick={naverLoginBtn}>네이버로그인</p>
+                            <p>구글로그인</p>
+                            <p>페이스북로그인</p>
                         </div>
                     </form>
-                    <NaverLogin/>
                 </div>
             </div>
         </>
