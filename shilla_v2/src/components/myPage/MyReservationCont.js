@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import DayGridView from "../myPage/calendar/examples/DayGridView"; // 캘린더 컴포넌트 가져오기
 
 const MyReservationCont = () => {
   const [reservations, setReservations] = useState([]);
@@ -164,6 +165,22 @@ const MyReservationCont = () => {
             </div>
           );
         })}
+
+        {/* DayGridView 캘린더 추가 */}
+      <div className="calendar-wrap">
+        <h3>예약 캘린더</h3>
+        <DayGridView 
+          reservations={reservations.map((res) => ({
+            title: `${res.offer_name || res.room_type}`, // 이벤트 제목: 패키지명 또는 객실 타입
+            start: res.start_date, // 예약 시작일
+            end: res.end_date 
+              ? new Date(new Date(res.end_date).setDate(new Date(res.end_date).getDate() + 1))
+              .toISOString()
+              .split("T")[0]
+            : res.start_date, // 예약 종료일
+          }))}/>
+      </div>
+
       </div>
     </div>
   );
