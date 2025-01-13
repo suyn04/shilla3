@@ -75,7 +75,7 @@ const LoginComp = () => {
 
             }).catch(err => {
                 console.error('서버에러 발생 : ', err);
-                alert('로그인 중 오류가 발생했습니다.');
+                alert('로그인 중 오류가 발생했습니다.01');
             });
     }
 
@@ -111,6 +111,8 @@ const LoginComp = () => {
                             </div>
                             <button type="button" className="btn-login" onClick={loginGo}>로그인</button>
 
+                            <NaverLogin/>
+                            
                             <div className="link-wrap">
                                 <Link to="/join">회원가입</Link>
                                 <Link to="/findid">ID/PW찾기</Link>
@@ -118,7 +120,6 @@ const LoginComp = () => {
 
                         </div>
                     </form>
-                    <NaverLogin/>
                 </div>
             </div>
         </>
