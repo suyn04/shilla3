@@ -5,12 +5,15 @@ const coolsms = require('coolsms-node-sdk').default;
 
 module.exports = () => {
     // SMS 전송 API
-    router.get('/sms', (req, res) => {
+    router.post('/sms', (req, res) => {
+        // 인증번호 받을 전화번호
+        console.log(req.body);
+        const { phoneNum } = req.body;
+        console.log(phoneNum);
         // 랜덤숫자
         const randomNum = String(Math.floor(Math.random() * 100000)).padStart(5, '0');
         console.log('랜덤숫자:', randomNum);
 
-        res.send(randomNum);
         // apiKey, apiSecret 설정
         const messageService = new coolsms(process.env.COOLSMS_API_KEY, process.env.COOLSMS_API_SECRET);
 
@@ -18,9 +21,9 @@ module.exports = () => {
         // messageService
         //     .sendMany([
         //         {
-        //             to: '01041402608',
+        //             to: phoneNum,
         //             from: '01041402608',
-        //             text: `본인인증번호:${randomNum()}`,
+        //             text: `본인인증번호:${randomNum}`,
         //         },
         //         // 1만건까지 추가 가능
         //     ])
