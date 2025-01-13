@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import MainHeader from './MainHeader'
 import MainCont1 from './MainCont1'
 import MainCont2 from './MainCont2'
@@ -9,8 +9,36 @@ import MainCont6 from './MainCont6'
 import Footer from '../common/Footer'
 
 const Main = () => {
+    const [weather, setWeather] = useState(null); // 오늘 날씨
+    const [tomorrowWeather, setTomorrowWeather] = useState(null); // 내일 날씨
+
     useEffect(() => {
         AOS.init();
+
+        const serviceKey = 'AR3tMfyh5MWssH784rCxZvbVscIDGjlVSdp3X4LUYtcvY1ZPE8w0cP%2F1GnSAmf%2F9vFAfS6dPuMDL9G1ursRxJA%3D%3D'; // 기상청 API 서비스 키
+        const today = new Date();
+        const baseDate = today.toISOString().slice(0, 10).replace(/-/g, ""); // YYYYMMDD
+        const baseTime = "0600"; // 발표 시간
+        const nx = 55; // 서울 기준 X 좌표
+        const ny = 127; // 서울 기준 Y 좌표
+
+        // 오늘 날씨 데이터 가져오기
+        const fetchTodayWeather = async () => {
+            const url = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?serviceKey=${serviceKey}&numOfRows=10&pageNo=1&dataType=JSON&base_date=${baseDate}&base_time=${baseTime}&nx=${nx}&ny=${ny}`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.response.header.resultCode === "00") {
+                    setWeather(data.response.body.items.item); // 오늘 날씨 데이터
+                } else {
+                    console.error("Weather API Error:", data.response.header.resultMsg);
+                }
+            } catch (error) {
+                console.error("Failed to fetch today's weather data:", error);
+            }
+        };
+
+        fetchTodayWeather();
 
         // 메인페이지 Header
         const mainHeader = document.querySelector(".main-header header");
@@ -170,16 +198,19 @@ const Main = () => {
     },[]);
 
     
+
+    
     return (
         <>
             <MainHeader></MainHeader>
             <main>
-                <MainCont1></MainCont1>
-                <MainCont2></MainCont2>
-                <MainCont3></MainCont3>
-                <MainCont4></MainCont4>
-                <MainCont5></MainCont5>
-                <MainCont6></MainCont6>
+                 {/* weather 데이터를 MainCont1에 전달 */}
+                <MainCont1 weather={weather} tomorrowWeather={tomorrowWeather}/>
+                <MainCont2 />
+                <MainCont3 />
+                <MainCont4 />
+                <MainCont5 />
+                <MainCont6 />
             </main>
             <Footer></Footer>
         </>
