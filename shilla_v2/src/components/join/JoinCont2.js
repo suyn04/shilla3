@@ -10,28 +10,6 @@ import '../../scss/myinfo.scss';
 
 const bkURL = process.env.REACT_APP_BACK_URL;
 
-const params = new URLSearchParams(window.location.search);
-const code = encodeURIComponent(params.get('response_type'))
-const state = encodeURIComponent(params.get('state'))
-
-async function getUserData() {
-    if(code && state){//서버에서 사용자 정보 가져오는법
-        const response = await fetch(`${bkURL}/naverLogin/callback?code=${code}&state=${state}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                code: code,
-                state: state
-            }),
-        });
-        const userData = await response.json();
-        console.log(userData);
-    }
-}
-getUserData()
-
 const JoinCont2 = () => {
     const [id, setId] = useState(''); // 아이디 상태
     const [valid, setValid] = useState(false); // 유효성 상태
@@ -51,7 +29,6 @@ const JoinCont2 = () => {
     const [isNameEngValid, setNameEngValid] = useState(true);
     const [isPhoneValid, setPhoneValid] = useState(true);
     const [isPwValid, setPwValid] = useState(true);
-    const [naverinfo, setNaverinfo] = useState('');
 
     const navigate = useNavigate();
 
@@ -104,7 +81,7 @@ const JoinCont2 = () => {
             setIsPopupVisible(true);
         }
     };
-    
+
     // 팝업 닫기
     const closePopup = () => {
         setIsPopupVisible(false);

@@ -49,7 +49,8 @@ module.exports = () => {//이미 로그인 돼있다면 이 화면은 생략되�
     
                 if (existingUser && existingUser.length > 0) {
                     req.session.user = existingUser[0];
-                    return res.json({ loggedIn: true, user: req.session.user });
+                    console.log("세션에 저장된 사용자 정보01:", req.session.user)
+                    return res.redirect(`http://localhost:5002/bk/naverLogin/check`);
                 } else {
                     await conn.execute(
                         'INSERT INTO member (member_id, pw, name, email, grade) VALUES (?, ?, ?, ?, 3)', [
@@ -66,8 +67,8 @@ module.exports = () => {//이미 로그인 돼있다면 이 화면은 생략되�
                         email: userData.email,
                         grade: 3,
                     };
-                    console.log("세션에 저장된 사용자 정보:", req.session.user);
-                    return res.redirect("http://localhost:3000/login");
+                    console.log("세션에 저장된 사용자 정보02:", req.session.user);
+                    return res.redirect(`http://localhost:5002/bk/naverLogin/check`);
                     // return res.json({ loggedIn: true, user: req.session.user });
                 }
             } else {
@@ -81,7 +82,8 @@ module.exports = () => {//이미 로그인 돼있다면 이 화면은 생략되�
 
       router.get('/check', (req, res)=>{//로그인 상태 확인 라우터
         if(req.session.user){
-            return res.redirect("http://localhost:3000/login");
+            console.log("세션에 저장된 사용자 정보03:", req.session.user);
+            return res.redirect(`http://localhost:3000`);
         //   res.json({loggedIn: true, user : req.session.user})
         }else{
           res.json({ loggedIn : false })
