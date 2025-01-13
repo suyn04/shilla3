@@ -235,10 +235,6 @@ const MyReservationCont = () => {
     ]}
   />
 </div>
-
-
-
-
       </div>
     </div>
   );
