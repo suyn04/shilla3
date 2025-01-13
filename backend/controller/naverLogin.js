@@ -83,8 +83,8 @@ module.exports = () => {//이미 로그인 돼있다면 이 화면은 생략되�
       router.get('/check', (req, res)=>{//로그인 상태 확인 라우터
         if(req.session.user){
             console.log("세션에 저장된 사용자 정보03:", req.session.user);
-            return res.redirect(`http://localhost:3000`);
-        //   res.json({loggedIn: true, user : req.session.user})
+            //return res.redirect(`http://localhost:3000`);
+           res.json({loggedIn: true, user : req.session.user})
         }else{
           res.json({ loggedIn : false })
         }
