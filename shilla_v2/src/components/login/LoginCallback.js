@@ -25,6 +25,13 @@ function LoginCallback(props) {
             setAccessToken(access_token);
             setGrade(gradeParam);
             setUserData(parsedUserData);
+
+            // console.log('Code:', code);
+            // console.log('State:', state);
+            // console.log('Access Token:', access_token);
+            // console.log('User Data:', parsedUserData);
+            // console.log('Grade:', gradeParam);
+
             // console.log('Backend URL:', bkURL);
             axios.get(`${bkURL}/naverLogin/getUserInfo`,{withCredentials: true})
             .then(res => {
