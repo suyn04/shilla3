@@ -84,7 +84,7 @@ module.exports = () => {//1단계 - 이미 로그인 돼있다면 이 화면은 
 });
 
     router.get('/getUserInfo', (req, res)=>{//3단계 - 최종 로그인 상태 확인 라우터
-        // console.log('세션 상태:', req.session);
+        console.log('세션 상태:', req.session);
         if(req.session.user){
             return res.json({ loggedIn: true, user: req.session.user });
         }else{

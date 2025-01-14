@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const bkURL = process.env.REACT_APP_BACK_URL;
@@ -15,6 +16,9 @@ const NaverLogin = () => {
 
     useEffect(() => {
         const naverLogin = new window.naver.LoginWithNaverId({
+            clientId: "YOUR_NAVER_CLIENT_ID", // 네이버에서 발급받은 클라이언트 아이디
+            callbackUrl: "YOUR_REDIRECT_URL", // 리디렉션 URL (백엔드에서 받은 콜백 URL)
+            isPopup: false, // 팝업 방식 여부
             loginButton: {
                 color: "green", // 버튼 색상
                 type: 3, // 버튼 형태 (기본, 텍스트 버튼 등)
