@@ -3,6 +3,7 @@ import {Link,useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import '../../scss/common.scss'
 import '../../scss/login.scss'
+import NaverLogin from "./NaverLogin";
 
 const bkURL = process.env.REACT_APP_BACK_URL;
 
