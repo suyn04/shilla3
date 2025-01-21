@@ -22,6 +22,7 @@ module.exports = () => {//1단계 - 이미 로그인 돼있다면 이 화면은 
         if (!code || !state) {
             return res.status(400).send('code 또는 state 값이 누락되었습니다.');
         }
+
         if(state != req.session.state){
             //보안 강화를 위함
             return res.status(400).send('state 값 일치하지 않음')
@@ -31,57 +32,63 @@ module.exports = () => {//1단계 - 이미 로그인 돼있다면 이 화면은 
             const tokenRequest = await axios.post(
                 `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&redirect_uri=${REDIRECT_URI}&code=${code}&state=${state}`
             );
+            // console.log('tokenRequest:', tokenRequest)
     
-            if ("access_token" in tokenRequest.data) {
-                const { access_token } = tokenRequest.data;
-    
-                const userResponse = await axios.get("https://openapi.naver.com/v1/nid/me", {
-                    headers: {
-                        Authorization: `Bearer ${access_token}`,
-                    },
-                });
-    
-                const userData = userResponse.data.response;
-    
-                const [existingUser] = await conn.execute(
-                    `SELECT * FROM member WHERE member_id = ?`, [userData.id]
-            );
-    
-            if (existingUser && existingUser.length > 0) {
-                req.session.user = existingUser[0];
-                // return res.redirect(`http://localhost:3000/callback?response_type=${code}&client_id=${CLIENT_ID}&state=${STATE}&redirect_uri=${REDIRECT_URI}`);
-                return res.redirect
-                (`http://localhost:3000/callback?code=${code}&state=${state}&access_token=${access_token}&grade=${userData.grade}&userData=${JSON.stringify(userData)}`);
+                if ("access_token" in tokenRequest.data) {
+                    const { access_token } = tokenRequest.data;
+        
+                    const userResponse = await axios.get("https://openapi.naver.com/v1/nid/me", {
+                        headers: {
+                            Authorization: `Bearer ${access_token}`,
+                        },
+                    });
+        
+                    const userData = userResponse.data.response;
+        
+                    const [existingUser] = await conn.execute(
+                        `SELECT * FROM member WHERE member_id = ?`, [userData.id]
+                    );
+                    // console.log('existingUser : ',existingUser)
+                    if (existingUser && existingUser.length > 0) {
+                        req.session.user = existingUser[0];
+                        // return res.redirect(`http://localhost:3000/callback?response_type=${code}&client_id=${CLIENT_ID}&state=${STATE}&redirect_uri=${REDIRECT_URI}`);
+                        // console.log('existingUser있을때 : ',req.session.user)
+                        return res.redirect
+                        (`http://localhost:3000/callback?code=${code}&state=${state}&access_token=${access_token}&grade=${userData.grade}&userData=${JSON.stringify(userData)}`);
+                    } else {
+                        // console.log('existingUser없을때')
+                        // console.log('userData :',userData)
+                        const password = generateRandomString(12);
+                        const memberData = [
+                            userData.id,
+                            password,
+                            userData.name || null,
+                            userData.email || null,
+                            3
+                        ];
+                        await conn.execute(
+                            'INSERT INTO member (member_id, pw, name, email, grade) VALUES (?, ?, ?, ?, ?)', memberData
+                        );
+        
+                    req.session.user = {
+                        member_id: userData.id,
+                        name: userData.name,
+                        email: userData.email,
+                        grade: 3,
+                    };
+                    // return res.redirect(`http://localhost:5002/bk/naverLogin/check`);
+                    return res.redirect
+                    (`http://localhost:3000/callback?code=${code}&state=${state}&access_token=${access_token}&grade=${userData.grade}&userData=${JSON.stringify(userData)}`);
+                    // return res.json({ loggedIn: true, user: req.session.user });
+                }
             } else {
-                await conn.execute(
-                    'INSERT INTO member (member_id, pw, name, email, grade) VALUES (?, ?, ?, ?, 3)', [
-                        userData.id,
-                        generateRandomString(12),
-                        userData.name,
-                        userData.email,
-                        userData.grade,
-                    ]
-                );
-    
-                req.session.user = {
-                    member_id: userData.id,
-                    name: userData.name,
-                    email: userData.email,
-                    grade: 3,
-                };
-                // return res.redirect(`http://localhost:5002/bk/naverLogin/check`);
-                return res.redirect
-                (`http://localhost:3000/callback?code=${code}&state=${state}&access_token=${access_token}&grade=${userData.grade}&userData=${JSON.stringify(userData)}`);
-                // return res.json({ loggedIn: true, user: req.session.user });
+                return res.status(400).send('access_token 접근 실패');
             }
-        } else {
-            return res.status(400).send('access_token 접근 실패');
+        } catch (err) {
+            console.error("네이버 로그인 처리 오류 발생:", err);
+            return res.status(500).send('네이버 로그인 처리 서버 오류');
         }
-    } catch (err) {
-        console.error("네이버 로그인 처리 오류 발생:", err);
-        return res.status(500).send('네이버 로그인 처리 서버 오류');
-    }
-});
+    });
 
     router.get('/getUserInfo', (req, res)=>{//3단계 - 최종 로그인 상태 확인 라우터
         console.log('세션 상태:', req.session);
