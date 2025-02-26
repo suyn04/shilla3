@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "../../scss/noticedetail.scss";
-import NoticedetailOther from "./NoticedetailOther";
+
+const bkURL = process.env.REACT_APP_BACK_URL;
 
 const Noticedetail = () => {
     const [Noticedetails, setNoticedetails] = useState(null);
@@ -12,18 +13,18 @@ const Noticedetail = () => {
     const fetchData = async () => {
         try {
             const cnt = await axios.put(
-                `http://localhost:5002/bk/notice/${id}`
+                `${bkURL}/notice/${id}`
             );
             console.log("조회수증가 성공");
             const res = await axios.get(
-                `http://localhost:5002/bk/notice/detail/${id}`
+                `${bkURL}/notice/detail/${id}`
             );
             console.log("디테일갔다옴 : ", res.data);
             setNoticedetails(res.data);
 
             setImgUrl(
                 res.data.system_name
-                    ? `http://localhost:5002/bk/files/${res.data.system_name}`
+                    ? `${bkURL}/files/${res.data.system_name}`
                     : ""
             );
         } catch (err) {

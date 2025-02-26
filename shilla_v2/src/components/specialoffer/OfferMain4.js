@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import axios from "axios";
 import Pagination from "../sub/Pagination";
+
+const bkURL = process.env.REACT_APP_BACK_URL;
 
 const OfferMain4 = ({ offer }) => {
     // console.log(`파일옵니까: ${(<img src={offerimg} />)}`);
@@ -57,7 +57,7 @@ const OfferMain4 = ({ offer }) => {
                         //         ) // 키워드 중 하나라도 1인지 확인
                         // )
                         .map(data => {
-                            const imgurl = `http://localhost:5002/bk/files/${data.upSystem}`;
+                            const imgurl = `${bkURL}/files/${data.upSystem}`;
 
                             return (
                                 <li

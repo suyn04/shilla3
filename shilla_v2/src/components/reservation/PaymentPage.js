@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../../scss/paymentPage.module.scss";
+
+const bkURL = process.env.REACT_APP_BACK_URL;
 
 function PaymentPage() {
   const location = useLocation();
@@ -73,7 +75,7 @@ function PaymentPage() {
     try {
       // axios를 사용하여 서버로 예약 데이터를 전송합니다.
       const response = await axios.post(
-        "http://localhost:5002/bk/reserve/save",
+        `${bkURL}/reserve/save`,
         reservationData
       );
 
@@ -120,7 +122,7 @@ function PaymentPage() {
 
     try {
       const paymentResponse = await axios.post(
-        "http://localhost:5002/bk/reserve/savepayment", // 결제 저장 API
+        `${bkURL}/reserve/savepayment`, // 결제 저장 API
         paymentData
       );
 

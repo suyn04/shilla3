@@ -1,17 +1,17 @@
-import { Doughnut } from "react-chartjs-2";
-import { useState, useEffect } from "react";
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 import axios from "axios";
 import {
-  Chart as ChartJS,
+  ArcElement,
   CategoryScale,
+  Chart as ChartJS,
+  Legend,
   LinearScale,
   PointElement,
-  ArcElement,
   Title,
   Tooltip,
-  Legend,
 } from "chart.js";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { useEffect, useState } from "react";
+import { Doughnut } from "react-chartjs-2";
 
 ChartJS.register(
   CategoryScale,
@@ -23,7 +23,7 @@ ChartJS.register(
   Legend,
   ChartDataLabels
 );
-
+const bkURL = process.env.REACT_APP_BACK_URL;
 const options = {
   responsive: true,
   plugins: {
@@ -49,7 +49,7 @@ const AdminCont2Chart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5002/bk/admin/dashboard/price');
+        const response = await axios.get(`${bkURL}/admin/dashboard/price`);
         const labels = response.data.map((item) => item.dateCalc);
         const prices = response.data.map((item) => item.totalPrice);
         

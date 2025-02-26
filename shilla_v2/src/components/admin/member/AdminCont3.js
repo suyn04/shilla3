@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Pagination from "../../sub/Pagination";
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "../../../scss/AdminCont3.scss";
+import Pagination from "../../sub/Pagination";
 
+const bkURL = process.env.REACT_APP_BACK_URL;
 
 function AdminCont3() {
     const [member, memberSet] = useState([]); // 회원 목록
@@ -14,7 +15,7 @@ function AdminCont3() {
 
     // 회원 데이터 가져오기
     const fetchData = () => {
-        axios.get('http://localhost:5002/bk/admin/member')
+        axios.get(`${bkURL}/bk/admin/member`)
             .then(res => {
                 memberSet(res.data.members);
             })
@@ -66,7 +67,7 @@ function AdminCont3() {
 
         console.log("수정된 데이터", updatedData);
 
-        axios.put("http://localhost:5002/bk/admin/member", updatedData)
+        axios.put(`${bkURL}/admin/member`, updatedData)
             .then(() => {
                 alert("수정되었습니다");
                 fetchData();

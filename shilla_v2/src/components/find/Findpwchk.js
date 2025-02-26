@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const bkURL = process.env.REACT_APP_BACK_URL;
 const Findpwchk = ({ id }) => {
     const [pwerr, setpwerr] = useState("");
     const [pwchkerr, setpwchkerr] = useState("");
@@ -35,7 +36,7 @@ const Findpwchk = ({ id }) => {
         } else setpwchkerr("");
 
         try {
-            const res = await axios.put("http://localhost:5002/bk/find/pwchk", {
+            const res = await axios.put(`${bkURL}/find/pwchk`, {
                 ...mydata,
                 id,
             });

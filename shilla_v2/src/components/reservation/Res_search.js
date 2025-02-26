@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import DateRangePicker from "./DateRangePicker";
-import PackageRoomItem from "./PackageRoomItem"; // 패키지 컴포넌트
 import OneRoomItem from "./OneRoomItem"; // 객실 컴포넌트
+import PackageRoomItem from "./PackageRoomItem"; // 패키지 컴포넌트
 // import "../../scss/res_search.scss";
 import "../../scss/common.scss";
 import "../../scss/reservation.scss";
+
+const bkURL = process.env.REACT_APP_BACK_URL;
 
 function Res_search() {
   const navigate = useNavigate();
@@ -141,9 +142,9 @@ function Res_search() {
     console.log("종료일:", endDate);
 
     try {
-      const response = await axios.post("http://localhost:5002/bk/reserve", {
-        startDate,
-        endDate,
+      const response = await axios.post(`${bkURL}/reserve`, {
+        startDate: checkInDate,
+        endDate: checkOutDate,
       });
 
       if (response.status === 200) {

@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import "../../scss/paymentSuccess.scss";
 import axios from "axios";
-import Header from "../common/Header";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import "../../scss/paymentSuccess.scss";
 import Footer from "../common/Footer";
+import Header from "../common/Header";
+
+const bkURL = process.env.REACT_APP_BACK_URL;
 
 const PaymentSuccess = () => {
   const navigate = useNavigate();
@@ -22,7 +24,7 @@ const PaymentSuccess = () => {
     const fetchPaymentDetails = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:5002/api/payment/confirm",
+          `${bkURL}/api/payment/confirm`,
           {
             paymentKey,
             orderId,
@@ -97,7 +99,7 @@ const PaymentSuccess = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5002/bk/reserve/save",
+        `${bkURL}/reserve/save`,
         reservationData
       );
 
@@ -142,7 +144,7 @@ const PaymentSuccess = () => {
 
     try {
       const paymentResponse = await axios.post(
-        "http://localhost:5002/bk/reserve/savepayment",
+        `${bkURL}/reserve/savepayment`,
         paymentData
       );
       // if (paymentResponse.status === 201) {

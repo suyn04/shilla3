@@ -4,7 +4,7 @@ const db = require('mysql2');
 
 // 데이터베이스 연결 객체 생성
 const conn = db.createPool({
-    host : 'localhost', //127.0.0.1 써도 됨
+    host : 'https://aquamarine-gecko-22bad4.netlify.app/', //127.0.0.1 써도 됨
     user : 'tj',
     password : '1234',
     database : 'study_db'

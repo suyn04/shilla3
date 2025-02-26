@@ -1,9 +1,11 @@
 import React from "react";
-import "../../scss/sub01_01_main.scss";
 import { Link } from "react-router-dom";
+import "../../scss/sub01_01_main.scss";
+
+const bkURL = process.env.REACT_APP_BACK_URL;
 
 function OfferProd({ rec, index }) {
-    const imgurl = `http://localhost:5002/bk/files/${rec.upSystem}`;
+    const imgurl = `${bkURL}/files/${rec.upSystem}`;
     const className = index > 2 ? "rec-section none" : "rec-section";
     // 날짜출력
     const formatter = new Intl.DateTimeFormat("ko-KR", {

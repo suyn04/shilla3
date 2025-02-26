@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
-import Header from "../common/Header";
-import Footer from "../common/Footer";
+import { useState } from "react";
 import "../../scss/sub01_01_main.scss";
-import { Link } from "react-router-dom";
-import OfferMain2_type from "./OfferMain2_type";
+import OfferMain2_btn from "./OfferMain2_btn";
 import OfferMain2_date from "./OfferMain2_date";
 import OfferMain2_kewords from "./OfferMain2_keword";
-import OfferMain2_btn from "./OfferMain2_btn";
+import OfferMain2_type from "./OfferMain2_type";
+
+const bkURL = process.env.REACT_APP_BACK_URL;
 
 const OfferMain2 = ({ setOfferlists }) => {
     const [range, setRange] = useState([{ startDate: null, endDate: null }]);
@@ -41,7 +40,7 @@ const OfferMain2 = ({ setOfferlists }) => {
         try {
             console.log("폼데이터", myData);
             const res = await axios.put(
-                "http://localhost:5002/bk/specialOffer",
+                `${bkURL}/specialOffer`,
                 myData
             );
             console.log("필터데이터", res.data);

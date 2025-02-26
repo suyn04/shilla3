@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import Header from "../common/Header";
-import Footer from "../common/Footer";
-import { title, commentpw } from "./Finddata";
-import "../../scss/findpw.scss";
-import { Form, Link, Navigate, useNavigate } from "react-router-dom";
-import Findpwchk from "./Findpwchk";
 import axios from "axios";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "../../scss/findpw.scss";
+import Footer from "../common/Footer";
+import Header from "../common/Header";
+import { commentpw, title } from "./Finddata";
 import Findpw_confirm from "./Findpw_confirm";
 
+const bkURL = process.env.REACT_APP_BACK_URL;
 const Findpw = () => {
     const [click, setclick] = useState(false);
     const handleclick = () => {
@@ -34,7 +34,7 @@ const Findpw = () => {
 
         try {
             const res = await axios.put(
-                "http://localhost:5002/bk/find/idchk",
+                `${bkURL}/find/idchk`,
                 mydata
             );
             // console.log("res.data", res.data, "값", res.data.success);

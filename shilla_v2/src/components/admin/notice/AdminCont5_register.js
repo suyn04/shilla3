@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../../scss/AdminCont5_register.scss";
-import { Link, Navigate, useNavigate } from "react-router-dom";
 import AdminCont5_register_btn from "./AdminCont5_register_btn";
 import AdminCont5_register_require from "./AdminCont5_register_require";
 
 const AdminCont5_register = () => {
+    const bkURL = process.env.REACT_APP_BACK_URL;
     const navigate = useNavigate();
     const [category, setcategory] = useState({});
 
@@ -26,7 +27,7 @@ const AdminCont5_register = () => {
         try {
             console.log("입력폼데이터", mydata);
             const res = await axios.post(
-                "http://localhost:5002/bk/notice/register",
+                `${bkURL}/notice/register`,
                 mydata,
                 {
                     headers: {

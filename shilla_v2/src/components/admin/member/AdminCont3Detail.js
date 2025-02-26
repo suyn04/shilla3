@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react'; // useState, useEffect 불러오기
-import { useParams, useNavigate, Link } from 'react-router-dom'; // useParams, useNavigate, Link 불러오기
 import axios from 'axios'; // axios 불러오기
+import { useEffect, useState } from 'react'; // useState, useEffect 불러오기
+import { Link, useNavigate, useParams } from 'react-router-dom'; // useParams, useNavigate, Link 불러오기
 
-import Header from '../../common/Header' // Header UI 불러오기
-import Footer from '../../common/Footer' // Footer UI 불러오기
-import AdminTabMenu from '../AdminTabMenu' // 좌측 탭메뉴 불러오기
-import '../../../scss/admin.scss' // admin scss 불러오기
+import '../../../scss/admin.scss'; // admin scss 불러오기
+import Footer from '../../common/Footer'; // Footer UI 불러오기
+import Header from '../../common/Header'; // Header UI 불러오기
+import AdminTabMenu from '../AdminTabMenu'; // 좌측 탭메뉴 불러오기
 
 const AdminCont3Detail = () => {
+    const bkURL = process.env.REACT_APP_BACK_URL;
     const navigate = useNavigate(); // 페이지 이동하는 navigate 변수
     const [ member, memberSet ] = useState(null); // 회원 정보 상태 (초기값 null)
     const [ reservation, reservationSet ] = useState([]); // 예약 정보 상태 (초기값 빈 배열)
@@ -18,7 +19,7 @@ const AdminCont3Detail = () => {
         
         const fetchReservations = async () => { // 동시 처리를 위해 비동기 함수 선언 (Promise로 객체 반환)
             try {
-                const response = await axios.get(`http://localhost:5002/bk/admin/member/detail/${id}`) // 응답 데이터 response에 담기
+                const response = await axios.get(`${bkURL}/admin/member/detail/${id}`) // 응답 데이터 response에 담기
                 // await 비동기 작업 완료될 때 까지 대기(axios.get)으로 보내는 http 요청이 완료될 때 까지 대기 후 response에 할당
                 // GET 요청을 보내서 특정 회원의 정보를 가져오는 작업을 수행, 요청 대기 후 response 할당
                 reservationSet(response.data.reserve) // reservation의 상태 업데이트 함수, reservationSet의 응답 데이터인 reserve(예약정보 데이터)를 실행

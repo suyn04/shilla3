@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Pagination from "../../sub/Pagination";
 
 const AdminCont5_list = ({ Noticelists, setNoticelists }) => {
     const navigate = useNavigate();
-
+    const bkURL = process.env.REACT_APP_BACK_URL;
     //페이지네이션
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10; // 한 페이지에 보여줄 아이템 수
@@ -27,7 +27,7 @@ const AdminCont5_list = ({ Noticelists, setNoticelists }) => {
         console.log("파일이름", targetNotice.system_name);
         try {
             const res = await axios.delete(
-                `http://localhost:5002/bk/notice/delete/${id}`,
+                `${bkURL}/notice/delete/${id}`,
                 {
                     data: { delUPfile: targetNotice.system_name },
                     headers: {

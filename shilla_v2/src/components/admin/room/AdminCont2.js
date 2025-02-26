@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Pagination from "../../sub/Pagination";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../../scss/AdminCont2.scss";
+import Pagination from "../../sub/Pagination";
 
 const bkURL = process.env.REACT_APP_BACK_URL;
-
 const AdminCont2 = () => {
+    
     const [rooms, setRooms] = useState([]);
     const [editedRooms, setEditedRooms] = useState({}); // 수정된 데이터 저장
     const navigate = useNavigate();
@@ -17,7 +17,7 @@ const AdminCont2 = () => {
     // 객실 목록 가져오는 함수
     const fetchRooms = () => {
         axios
-            .get("http://localhost:5002/bk/admin/roomManagement")
+            .get(`${bkURL}/admin/roomManagement`)
             .then((response) => {
                 setRooms(response.data);
             })
@@ -45,7 +45,7 @@ const AdminCont2 = () => {
     const handleUpdate = (roomId) => {
 
         axios
-            .post(`http://localhost:5002/bk/admin/roomManagement/update`, {
+            .post(`${bkURL}/admin/roomManagement/update`, {
                 roomId,
                 ...editedRooms[roomId],
             })

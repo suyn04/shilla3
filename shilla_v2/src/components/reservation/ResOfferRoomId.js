@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import "../../scss/res_search.scss";
 import OfferDateRangePicker from "./OfferDateRangePicker";
 import PackageRoomItem from "./PackageRoomItem"; // 패키지 컴포넌트
-import "../../scss/res_search.scss";
+
+const bkURL = process.env.REACT_APP_BACK_URL;
 
 function ResOfferRoomId(props) {
   const navigate = useNavigate();
@@ -108,7 +108,7 @@ function ResOfferRoomId(props) {
     const fetchOfferData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5002/bk/reserve/${product_id}`
+          `${bkURL}/reserve/${product_id}`
         );
         if (response.status === 200) {
           setOfferData(response.data);
@@ -134,7 +134,7 @@ function ResOfferRoomId(props) {
     setIsSearchClicked(true); // 검색 버튼 클릭 여부 설정
 
     try {
-      const response = await axios.post("http://localhost:5002/bk/reserve", {
+      const response = await axios.post(`${bkURL}/reserve`, {
         startDate: checkInDate.toISOString().split("T")[0],
         endDate: checkOutDate.toISOString().split("T")[0],
         product_id,

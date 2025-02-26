@@ -1,14 +1,16 @@
-import React, {useEffect, useState} from "react";
-import '../../scss/packageRoomItem.scss'
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import '../../scss/packageRoomItem.scss';
 import BtnModal from "./BtnModal";
+
+const bkURL = process.env.REACT_APP_BACK_URL;
 
 function PackageRoomItem({ packageData, checkInDate, checkOutDate, adultCount, childrenCount,index}) {
 
   const dataTitle = `pop-benefit-guide${index}`;
   const navigate = useNavigate();
   const memberId = sessionStorage.getItem("id");
-  const imgurl = `http://localhost:5002/bk/files/${packageData.upSystem}`
+  const imgurl = `${bkURL}/files/${packageData.upSystem}`
   const [isModalOpen, setIsModalOpen] = useState(false) // 모달 상태관리리
 
   console.log("packageData.start_date : ",packageData.start_date)

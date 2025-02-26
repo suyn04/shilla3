@@ -20,10 +20,15 @@ app.use(
 );
 
 // app.use(cors()); //다른 포트에서 들어와도 열어주도록 cors 세팅
-app.use(cors({
-    origin: 'http://localhost:3000',  // React 클라이언트 URL
-    credentials: true,  // 쿠키 포함
-}));
+// app.use(cors({
+//     origin: ['http://localhost:3000', 'https://aquamarine-gecko-22bad4.netlify.app/bk'],  // 허용할 출처 추가
+//     credentials: true,  // 쿠키 포함 허용
+//     allowedHeaders: ['Content-Type', 'Authorization'],  // 허용할 헤더들
+//     method: ['GET','POST','PUT','DELETE','OPTIONS']
+// }));
+
+// app.options('*',cors());
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json()); // JSON 파싱 미들웨어 추가
@@ -98,7 +103,7 @@ const offerReserveRouter = require('./controller/reserveOffer.js');
 app.use('/bk/reserve', offerReserveRouter);
 // toss api 라우터 추가가
 const paymentRouter = require('./controller/reservations.js');
-app.use('/api/payment', paymentRouter);
+app.use('/bk/api/payment', paymentRouter);
 // myPage reserve 라우터 추가
 // const myPageReserveRouter = require("./controller/myPageReservation.js");
 // app.use("/bk/myPage/myReservation", myPageReserveRouter);
@@ -136,10 +141,11 @@ app.use('/bk/find', findRouter);
 // app.get("*", (req, res) => {
 //     res.sendFile(path.join(__dirname, "build", "index.html"));
 // });
+
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.listen(5002, () => {
-    console.log('5002 2차 프로젝트 DB 연결 서버 실행');
+app.listen(8888, () => {
+    console.log('8888 3차 프로젝트 DB 연결 서버 실행');
 });

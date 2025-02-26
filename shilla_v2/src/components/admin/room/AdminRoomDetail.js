@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"; 
 import axios from "axios";
-import Header from '../../common/Header'
-import Footer from '../../common/Footer'
-import AdminTabMenu from '../AdminTabMenu'
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import "../../../scss/AdminRoomDetail.scss";
-import '../../../scss/admin.scss'
+import '../../../scss/admin.scss';
+import Footer from '../../common/Footer';
+import Header from '../../common/Header';
+import AdminTabMenu from '../AdminTabMenu';
 
-
+const bkURL = process.env.REACT_APP_BACK_URL;
 
 const AdminRoomDetail = () => {
     const { id } = useParams(); // URL에서 room_id 가져오기
@@ -29,7 +29,7 @@ const AdminRoomDetail = () => {
         document.title = "신라호텔:관리자"
         const fetchRoomDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:5002/bk/admin/roomManagement/detail/${id}`);
+                const response = await axios.get(`${bkURL}/admin/roomManagement/detail/${id}`);
                 setRoomDetails(response.data);
             } catch (err) {
                 console.error("방 정보 가져오는 중 오류 발생:", err);
@@ -39,7 +39,7 @@ const AdminRoomDetail = () => {
 
         const fetchReservations = async () => {
             try {
-                const response = await axios.get(`http://localhost:5002/bk/admin/roomManagement/reservations/${id}`);
+                const response = await axios.get(`${bkURL}/admin/roomManagement/reservations/${id}`);
                 setReservations(response.data);
             } catch (err) {
                 console.error("예약 정보 가져오는 중 오류 발생:", err);

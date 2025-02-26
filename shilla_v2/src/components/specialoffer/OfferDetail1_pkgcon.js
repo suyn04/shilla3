@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../../scss/sub01_01_sub135.scss";
 
+const bkURL = process.env.REACT_APP_BACK_URL;
+
 const OfferDetail1_pkgcon = ({ img }) => {
     const pkgdata = [
         {
@@ -126,7 +128,7 @@ const OfferDetail1_pkgcon = ({ img }) => {
         },
     ];
 
-    const imgurl = `http://localhost:5002/bk/files/${img}`;
+    const imgurl = `${bkURL}/files/${img}`;
     // const imgurl = `http://192.168.123.100:5002/bk/files/${img}`;
     return (
         <div>

@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import "../../scss/res_detail.scss";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import "../../scss/res_detail.scss";
+
+const bkURL = process.env.REACT_APP_BACK_URL;
 
 function Res_detail(props) {
   const navigate = useNavigate();
@@ -86,7 +88,7 @@ function Res_detail(props) {
     const fetchUpSystem = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:5002/bk/reserve/detail",
+          `${bkURL}/reserve/detail`,
           {
             productId, // location.state에서 productId를 전달받는다고 가정
           }

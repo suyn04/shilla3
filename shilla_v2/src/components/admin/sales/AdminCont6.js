@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import "../../../scss/AdminCont6.scss";
 import Pagination from "../../sub/Pagination";
 
+const bkURL = process.env.REACT_APP_BACK_URL;
 
 const AdminCont6 = () => {
     const [selectedYear, setSelectedYear] = useState('');
@@ -36,7 +37,7 @@ const AdminCont6 = () => {
     useEffect(() => {
         const fetchFilterData = async () => {
             try {
-                const response = await axios.get("http://localhost:5002/bk/sales/filters");
+                const response = await axios.get(`${bkURL}/sales/filters`);
                 setYears(response.data.years);
                 setMonths(response.data.months);
                 setRooms(response.data.rooms);
@@ -52,7 +53,7 @@ const AdminCont6 = () => {
     useEffect(() => {
         const fetchSalesData = async () => {
             try {
-                const response = await axios.get("http://localhost:5002/bk/sales", {
+                const response = await axios.get(`${bkURL}/sales`, {
                     params: {
                         year: selectedYear,
                         month: selectedMonth,

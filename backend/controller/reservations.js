@@ -3,6 +3,8 @@ const router = express.Router();
 const db = require('../db');
 const axios = require('axios');
 
+const bkURL = process.env.REACT_APP_BACK_URL;
+
 // 예약 가능한 객실 및 패키지 조회
 router.post('/', async (req, res) => {
   const { startDate, endDate } = req.body;
@@ -108,7 +110,7 @@ router.post('/detail', async (req, res) => {
     );
 
     if (result.length > 0) {
-      const upSystemPath = `http://localhost:5002/bk/files/${result[0].upSystem}`;
+      const upSystemPath = `${bkURL}/files/${result[0].upSystem}`;
       res.json({ upSystem: upSystemPath });
     } else {
       res.status(404).json({ message: "이미지를 찾을 수 없음" });
