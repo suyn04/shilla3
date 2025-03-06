@@ -6,7 +6,6 @@
 기간 : 25.01.03 ~ 25.01.14
 
 개발인원 : 4명
-
 👉 [프로젝트 소개 PPT](https://drive.google.com/drive/folders/1DBtAOxNeNGIUqoTV0znT3dxLUAShyKPv?usp=drive_link)
 
 - **Frontend**: React, SCSS, JavaScript
