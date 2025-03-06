@@ -9,5 +9,11 @@
 
 ## 🛠 기술 스택
 - **Frontend**: React, SCSS, javascript
-- **공개 API**: Toss 결제 API, 네이버 로그인 API, Coolsms 본인인증 API, Google 캘린더 API, Kakao map API, TinyMCE 스마트에디터 API, 기상청 날씨 API
+- **공개 API**: Toss 결제 API
+                네이버 로그인 API
+                Coolsms 본인인증 API
+                Google 캘린더 API
+                Kakao map API
+                TinyMCE 스마트에디터 API
+                기상청 날씨 API
 - **Database**: MariaDB
