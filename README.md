@@ -10,13 +10,13 @@
 
 <details>
   <summary>개발환경</summary>
-  - <strong>Frontend</strong>: React, SCSS, JavaScript
-  - Database: MariaDB
-  - **공개 API**:
-    - **이경근**: Toss 결제 API  
-    - **우수정**: 네이버 로그인 API  
-    - **김수훈**: Google 캘린더 API, Kakao map API, 기상청 날씨 API  
-    - **한수연**: Coolsms 본인인증 API, TinyMCE 스마트에디터 API 
+  - <strong>Frontend</strong>: React, SCSS, JavaScript <br/>
+  - <strong>Database</strong>: MariaDB <br/>
+  - <strong>공개 API</strong>: <br/>
+    - <strong>이경근</strong>: Toss 결제 API  <br/>
+    - <strong>우수정</strong>: 네이버 로그인 API  <br/>
+    - <strong>김수훈</strong>: Google 캘린더 API, Kakao map API, 기상청 날씨 API  <br/>
+    - <strong>한수연</strong>: Coolsms 본인인증 API, TinyMCE 스마트에디터 API <br/>
 </details>
 
 
