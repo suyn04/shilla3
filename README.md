@@ -9,7 +9,7 @@
 👉 [프로젝트 소개 PPT](https://drive.google.com/drive/folders/1DBtAOxNeNGIUqoTV0znT3dxLUAShyKPv?usp=drive_link)
 
 <details>
-  <summary>개발환경</summary>
+  <summary>🛠 기술 스택</summary>
   <ul>
     <li><strong>Frontend</strong>: React, SCSS, JavaScript</li>
     <li><strong>Database</strong>: MariaDB</li>
@@ -27,6 +27,26 @@
 <details>
   <summary>시연화면</summary>
   <details>
-    <summary>결제</summary>
+    <ul>
+      <li><summary>결제</summary></li>
+    </ul>
+    <ul>
+      <li><summary>로그인</summary></li>
+    </ul>
+    <ul>
+      <li><summary>구글 캘린더</summary></li>
+    </ul>
+    <ul>
+      <li><summary>카카오맵</summary></li>
+    </ul>
+    <ul>
+      <li><summary>날씨</summary></li>
+    </ul>
+    <ul>
+      <li><summary>본인인증</summary></li>
+    </ul>
+    <ul>
+      <li><summary>스마트 에디터</summary></li>
+    </ul>
   </details>
 </details>
