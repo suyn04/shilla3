@@ -1,6 +1,7 @@
 # 프로젝트명 (호텔 사이트 API 연동)
 
 ## 📝 소개
+
 기존 사이트에 필요한 API를 연동시킨 프로젝트
 
 기간 : 25.01.03 ~ 25.01.14
@@ -29,24 +30,31 @@
   <details>
     <ul>
       <li><summary>결제</summary></li>
+      ![결제 화면](./readmeImg/payment.png)
     </ul>
     <ul>
       <li><summary>로그인</summary></li>
+      ![결제 화면](./readmeImg/login.png)
     </ul>
     <ul>
       <li><summary>구글 캘린더</summary></li>
+      ![결제 화면](./readmeImg/google.png)
     </ul>
     <ul>
       <li><summary>카카오맵</summary></li>
+      ![결제 화면](./readmeImg/map.png)
     </ul>
     <ul>
       <li><summary>날씨</summary></li>
+      ![결제 화면](./readmeImg/weather.png)
     </ul>
     <ul>
       <li><summary>본인인증</summary></li>
+      ![결제 화면](./readmeImg/phone.png)
     </ul>
     <ul>
       <li><summary>스마트 에디터</summary></li>
+      ![결제 화면](./readmeImg/board.png)
     </ul>
   </details>
 </details>
