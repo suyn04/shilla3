@@ -30,31 +30,31 @@
   <details>
     <ul>
       <li><summary>결제</summary></li>
-      ![결제 화면](./readmeImg/payment.png)
+      <img src="./readmeImg/payment.png" alt="결제 화면">
     </ul>
     <ul>
       <li><summary>로그인</summary></li>
-      ![결제 화면](./readmeImg/login.png)
+      <img src="./readmeImg/login.png" alt="로그인 화면">
     </ul>
     <ul>
       <li><summary>구글 캘린더</summary></li>
-      ![결제 화면](./readmeImg/google.png)
+      <img src="./readmeImg/google.png" alt="구글 캘린더 화면">
     </ul>
     <ul>
       <li><summary>카카오맵</summary></li>
-      ![결제 화면](./readmeImg/map.png)
+      <img src="./readmeImg/map.png" alt="카카오맵 화면">
     </ul>
     <ul>
       <li><summary>날씨</summary></li>
-      ![결제 화면](./readmeImg/weather.png)
+      <img src="./readmeImg/weather.png" alt="날씨 화면">
     </ul>
     <ul>
       <li><summary>본인인증</summary></li>
-      ![결제 화면](./readmeImg/phone.png)
+      <img src="./readmeImg/phone.png" alt="본인인증 화면">
     </ul>
     <ul>
       <li><summary>스마트 에디터</summary></li>
-      ![결제 화면](./readmeImg/board.png)
+      <img src="./readmeImg/board.png" alt="스마트 에디터 화면">
     </ul>
   </details>
 </details>
